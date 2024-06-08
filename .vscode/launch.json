@@ -1,0 +1,20 @@
+{
+	"configurations": [
+		{
+			"name": "Dev",
+			"request": "launch",
+			"runtimeArgs": ["run", "dev"],
+			"runtimeExecutable": "pnpm",
+			"skipFiles": ["<node_internals>/**"],
+			"type": "node"
+		},
+		{
+			"name": "Tests",
+			"request": "launch",
+			"runtimeArgs": ["run", "test"],
+			"runtimeExecutable": "pnpm",
+			"skipFiles": ["<node_internals>/**"],
+			"type": "node"
+		}
+	]
+}

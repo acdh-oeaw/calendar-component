@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Calendar</title>
+		<style>
+			:root {
+				font-family: ui-sans-serif, system-ui, sans-serif;
+			}
+
+			acdh-ch-calendar {
+				--calendar-year-columns: 4;
+			}
+
+			acdh-ch-calendar-year td[data-event-kinds~="birthday"] {
+				--calendar-event-color: hotpink;
+			}
+
+			acdh-ch-calendar-year td[data-event-kinds~="party"] {
+				--calendar-event-color: lime;
+			}
+
+			acdh-ch-calendar-year td[data-event-kinds~="birthday"][data-event-kinds~="party"] {
+				--calendar-event-color: dodgerblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<acdh-ch-calendar>
+				<label>
+					<span>Select a year: </span>
+					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
+				</label>
+				<acdh-ch-calendar-year></acdh-ch-calendar-year>
+			</acdh-ch-calendar>
+		</div>
+
+		<script type="module">
+			import { register } from "/src/main.ts";
+			import de from "/src/i18n/de.json";
+
+			register();
+
+			const calendar = document.querySelector("acdh-ch-calendar");
+
+			calendar.setI18n(de);
+
+			const events = [
+				{ date: new Date(Date.UTC(2021, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
+				{ date: new Date(Date.UTC(2022, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
+				{ date: new Date(Date.UTC(2023, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
+				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
+				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Geburtstagsparty", kind: "party" },
+			];
+
+			calendar.setData({ events });
+
+			calendar.addEventListener("calendar-event-click", (event) => {
+				const { date, events } = event.detail;
+
+				alert(
+					`Clicked ${date} with ${events.length} event(s): ${events.map((event) => event.label).join(", ")}.`,
+				);
+			});
+		</script>
+	</body>
+</html>

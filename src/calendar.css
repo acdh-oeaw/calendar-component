@@ -1,0 +1,41 @@
+:where(acdh-ch-calendar) {
+	--calendar-event-color: transparent;
+	--calendar-year-columns: 3;
+
+	display: grid;
+	gap: 32px;
+}
+
+:where(acdh-ch-calendar-year) {
+	align-items: start;
+	display: grid;
+	gap: 32px;
+	grid-template-columns: repeat(var(--calendar-year-columns), auto);
+	justify-content: start;
+	user-select: none;
+}
+
+:where(acdh-ch-calendar-year caption) {
+	font-weight: 600;
+	margin-block-end: 8px;
+}
+
+:where(acdh-ch-calendar-year td) {
+	border-bottom: 2px solid var(--calendar-event-color);
+	padding: 4px;
+	text-align: right;
+}
+
+:where(acdh-ch-calendar-year td[data-event-kinds]) {
+	--calendar-event-color: black;
+}
+
+:where(acdh-ch-calendar-year td[data-event-kinds] button) {
+	appearance: none;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font: inherit;
+	padding: 0;
+	text-align: inherit;
+}

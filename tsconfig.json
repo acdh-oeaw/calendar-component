@@ -1,0 +1,12 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@acdh-oeaw/tsconfig-lib",
+	"compilerOptions": {
+		"allowImportingTsExtensions": true,
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"noEmit": true
+	},
+	"include": ["vite.config.ts", "src"],
+	"exclude": ["dist", "node_modules"]
+}
