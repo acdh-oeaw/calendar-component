@@ -1,5 +1,13 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.3
+
+### Patch Changes
+
+- [`c403e87`](https://github.com/acdh-oeaw/calendar-component/commit/c403e87bb08eb8fe96185d150ab2db60617bf2a5)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - add additional data attributes on table
+  cell with events
+
 ## 0.0.2
 
 ### Patch Changes
