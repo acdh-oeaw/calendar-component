@@ -11,6 +11,7 @@ import {
 } from "./constants.ts";
 import { createCalendar } from "./create-calendar.ts";
 import { getDateRange } from "./get-date-range.ts";
+import { getUniqueId } from "./get-unique-id.ts";
 import labels from "./i18n/en.json";
 import type { I18n } from "./i18n/types.ts";
 
@@ -35,7 +36,7 @@ export class Calendar extends HTMLElement {
 
 	i18n = labels;
 
-	picker: CalendarYearPicker | null;
+	picker: CalendarYearSelect | null;
 	calendar: CalendarYear | null;
 
 	constructor() {
@@ -49,7 +50,7 @@ export class Calendar extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.picker = this.querySelector<CalendarYearPicker>(ELEMENT_PICKER);
+		this.picker = this.querySelector<CalendarYearSelect>(ELEMENT_PICKER);
 		this.calendar = this.querySelector<CalendarYear>(ELEMENT_CALENDAR_YEAR);
 
 		assert(this.picker, "Missing picker element.");
@@ -113,7 +114,9 @@ export interface CalendarYearPickerData {
 	currentYear: number;
 }
 
-export class CalendarYearPicker extends HTMLElement {
+//
+
+export class CalendarYearSelect extends HTMLElement {
 	data: CalendarYearPickerData | null;
 
 	constructor() {
@@ -141,8 +144,11 @@ export class CalendarYearPicker extends HTMLElement {
 		range(startYear, endYear).forEach((year) => {
 			const option = document.createElement("option");
 			option.value = String(year);
-			option.textContent = String(year);
-			option.selected = year === currentYear;
+			option.append(document.createTextNode(String(year)));
+
+			const selected = year === currentYear;
+			option.selected = selected;
+
 			select.append(option);
 		});
 
@@ -154,6 +160,64 @@ export class CalendarYearPicker extends HTMLElement {
 
 		this.innerHTML = "";
 		this.append(select);
+	}
+}
+
+//
+
+export class CalendarYearRadioGroup extends HTMLElement {
+	data: CalendarYearPickerData | null;
+	id: string;
+
+	constructor() {
+		super();
+
+		this.data = null;
+		this.id = getUniqueId();
+	}
+
+	connectedCallback() {
+		this.update();
+	}
+
+	setData(data: CalendarYearPickerData) {
+		this.data = data;
+
+		this.update();
+	}
+
+	update() {
+		if (this.data == null) return;
+		const { startYear, endYear, currentYear } = this.data;
+
+		const radioGroup = document.createElement("div");
+		radioGroup.role = "radiogroup";
+
+		range(startYear, endYear).forEach((year) => {
+			const label = document.createElement("label");
+
+			const input = document.createElement("input");
+			input.type = "radio";
+			input.name = this.id;
+			input.value = String(year);
+
+			const selected = year === currentYear;
+			input.checked = selected;
+
+			label.append(input);
+			label.append(document.createTextNode(String(year)));
+
+			radioGroup.append(label);
+		});
+
+		radioGroup.addEventListener("change", (event) => {
+			const element = event.target as HTMLInputElement;
+			const year = Number(element.value);
+			this.dispatchEvent(new CustomEvent(EVENT_SELECT_YEAR, { detail: { year }, bubbles: true }));
+		});
+
+		this.innerHTML = "";
+		this.append(radioGroup);
 	}
 }
 
@@ -259,8 +323,14 @@ export class CalendarYear extends HTMLElement {
 
 //
 
-export function register() {
+interface CalendarRegisterOptions {
+	picker?: "radio-group" | "select";
+}
+
+export function register(options?: CalendarRegisterOptions) {
+	const picker = options?.picker === "select" ? CalendarYearSelect : CalendarYearRadioGroup;
+
 	customElements.define(ELEMENT_ROOT, Calendar);
-	customElements.define(ELEMENT_PICKER, CalendarYearPicker);
+	customElements.define(ELEMENT_PICKER, picker);
 	customElements.define(ELEMENT_CALENDAR_YEAR, CalendarYear);
 }

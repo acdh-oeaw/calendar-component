@@ -6,6 +6,24 @@
 	gap: 32px;
 }
 
+:where(acdh-ch-calendar-year-picker div[role="radiogroup"]) {
+	align-items: center;
+	display: inline-flex;
+	flex-wrap: wrap;
+	column-gap: 8px;
+	row-gap: 4px;
+}
+
+:where(acdh-ch-calendar-year-picker label) {
+	align-items: center;
+	column-gap: 4px;
+	display: inline-flex;
+}
+
+:where(acdh-ch-calendar-year-picker label input[type="radio"]) {
+	margin: 0;
+}
+
 :where(acdh-ch-calendar-year) {
 	align-items: start;
 	display: grid;

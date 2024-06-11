@@ -45,6 +45,11 @@
 		<script type="module">
 			import { register } from "https://unpkg.com/@acdh-oeaw/calendar-component@0";
 
+			/**
+			 * Default to radio group for selecting current calendar year.
+			 *
+			 * To display a `<select>` instead, use `register({ picker: "select" });`.
+			 */
 			register();
 
 			const calendar = document.querySelector("acdh-ch-calendar");
