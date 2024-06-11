@@ -278,11 +278,15 @@ export class CalendarYear extends HTMLElement {
 						if (eventsByDate.has(formattedDate)) {
 							const events = eventsByDate.get(formattedDate)!;
 
-							td.dataset["eventKinds"] = unique(
+							const kinds = unique(
 								events.map((event) => {
-									return event.kind;
+									return event.kind.replace(/\s+/g, "_");
 								}),
-							).join(" ");
+							);
+
+							td.dataset["eventKinds"] = kinds.join(" ");
+							td.dataset["eventKindsCount"] = String(kinds.length);
+							td.dataset["eventsCount"] = String(events.length);
 
 							const button = document.createElement("button");
 							button.textContent = String(day);
