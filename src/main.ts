@@ -264,3 +264,7 @@ export function register() {
 	customElements.define(ELEMENT_PICKER, CalendarYearPicker);
 	customElements.define(ELEMENT_CALENDAR_YEAR, CalendarYear);
 }
+
+//
+
+export { getDateRange };
