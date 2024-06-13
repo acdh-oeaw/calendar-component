@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Calendar example</title>
+		<title>Beispiel-Kalender</title>
 
 		<link
 			rel="stylesheet"
@@ -15,20 +15,16 @@
 				font-family: ui-sans-serif, system-ui, sans-serif;
 			}
 
-			acdh-ch-calendar {
-				--calendar-year-columns: 4;
+			acdh-ch-calendar-year td > button[data-event-kinds] {
+				--calendar-cell-color: dodgerblue;
 			}
 
-			acdh-ch-calendar-year td[data-event-kinds~="birthday"] {
-				--calendar-event-color: hotpink;
+			acdh-ch-calendar-year td > button[data-event-kinds="birthday"] {
+				--calendar-cell-color: hotpink;
 			}
 
-			acdh-ch-calendar-year td[data-event-kinds~="party"] {
-				--calendar-event-color: lime;
-			}
-
-			acdh-ch-calendar-year td[data-event-kinds~="birthday"][data-event-kinds~="party"] {
-				--calendar-event-color: dodgerblue;
+			acdh-ch-calendar-year td > button[data-event-kinds="party"] {
+				--calendar-cell-color: lime;
 			}
 		</style>
 	</head>
@@ -36,41 +32,62 @@
 	<body>
 		<acdh-ch-calendar>
 			<label>
-				<span>Select a year: </span>
+				<span>Jahr</span>
 				<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
 			</label>
-			<acdh-ch-calendar-year></acdh-ch-calendar-year>
+			<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
 		</acdh-ch-calendar>
 
 		<script type="module">
 			import { register } from "https://unpkg.com/@acdh-oeaw/calendar-component@0";
+			import de from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/i18n/de.json";
 
 			/**
-			 * Default to radio group for selecting current calendar year.
+			 * Defaults to radio group for selecting current calendar year.
 			 *
 			 * To display a `<select>` instead, use `register({ picker: "select" });`.
 			 */
 			register();
 
-			const calendar = document.querySelector("acdh-ch-calendar");
+			function createCalendar(i18n, events, onEventClick) {
+				const calendar = document.querySelector("acdh-ch-calendar");
 
-			const events = [
-				{ date: new Date(Date.UTC(2021, 8, 26)), label: "My birthday", kind: "birthday" },
-				{ date: new Date(Date.UTC(2022, 8, 26)), label: "My birthday", kind: "birthday" },
-				{ date: new Date(Date.UTC(2023, 8, 26)), label: "My birthday", kind: "birthday" },
-				{ date: new Date(Date.UTC(2024, 8, 26)), label: "My birthday", kind: "birthday" },
-				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Birthday party", kind: "party" },
-			];
+				if (i18n != null) {
+					calendar.setI18n(i18n);
+				}
 
-			calendar.setData({ events });
+				calendar.setData({ events });
 
-			calendar.addEventListener("calendar-event-click", (event) => {
+				calendar.addEventListener("calendar-event-click", onEventClick);
+			}
+
+			function onEventClick(event) {
 				const { date, events } = event.detail;
 
 				alert(
-					`Clicked ${date} with ${events.length} event(s): ${events.map((event) => event.label).join(", ")}.`,
+					`${date} mit ${events.length} Ereignissen:\n${events
+						.map((event) => {
+							return `- ${event.label}`;
+						})
+						.join("\n")}.`,
 				);
-			});
+			}
+
+			async function request(url) {
+				const response = await fetch(url);
+				const { event } = await response.json();
+				return events.map((event) => {
+					return { ...event, date: new Date(event.date) };
+				});
+			}
+
+			try {
+				const events = await request("/data.json");
+				createCalendar(de, events, onEventClick);
+				console.log("Successfully created calendar.");
+			} catch (error) {
+				console.error("Failed to create calendar.\n", String(error));
+			}
 		</script>
 	</body>
 </html>

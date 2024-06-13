@@ -1,0 +1,8 @@
+{
+	"events": [
+		{ "date": "2021-08-26", "label": "Mein Geburtstag", "kind": "birthday" },
+		{ "date": "2023-08-26", "label": "Mein Geburtstag", "kind": "birthday" },
+		{ "date": "2024-08-26", "label": "Mein Geburtstag", "kind": "birthday" },
+		{ "date": "2024-08-26", "label": "Geburtstagsparty", "kind": "party" }
+	]
+}
