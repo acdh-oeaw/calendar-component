@@ -1,5 +1,13 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.7
+
+### Patch Changes
+
+- [`23423e0`](https://github.com/acdh-oeaw/calendar-component/commit/23423e0b86dd7a661f7b89820ccc569bb10b5168)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - use js for i18n to avoid json imports
+  which don't yet work in esm
+
 ## 0.0.6
 
 ### Patch Changes
