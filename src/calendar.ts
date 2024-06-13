@@ -226,8 +226,6 @@ export class CalendarYearRadioGroup extends HTMLElement {
 		radioGroup.role = "radiogroup";
 
 		range(startYear, endYear).forEach((year) => {
-			if (this.variant === "sparse" && !eventsByDate.has(year)) return;
-
 			const label = document.createElement("label");
 
 			const input = document.createElement("input");
@@ -235,11 +233,18 @@ export class CalendarYearRadioGroup extends HTMLElement {
 			input.name = this.id;
 			input.value = String(year);
 
+			if (this.variant === "sparse" && !eventsByDate.has(year)) {
+				input.disabled = true;
+			}
+
 			const selected = year === currentYear;
 			input.checked = selected;
 
+			const span = document.createElement("span");
+			span.append(document.createTextNode(String(year)));
+
 			label.append(input);
-			label.append(document.createTextNode(String(year)));
+			label.append(span);
 
 			radioGroup.append(label);
 		});
