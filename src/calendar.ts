@@ -312,8 +312,6 @@ export class CalendarYear extends HTMLElement {
 						date.setDate(day);
 						const formattedDate = isoDate(date);
 
-						// td.dataset["date"] = formattedDate;
-
 						if (eventsByDate.has(formattedDate)) {
 							const events = eventsByDate.get(formattedDate)!;
 
@@ -330,11 +328,12 @@ export class CalendarYear extends HTMLElement {
 							button.dataset["eventKinds"] = kinds.join(" ");
 							button.dataset["eventKindsCount"] = String(kinds.length);
 							button.dataset["eventsCount"] = String(events.length);
+							// button.dataset["date"] = formattedDate;
 
 							button.addEventListener("click", () => {
 								this.dispatchEvent(
 									new CustomEvent(EVENT_CLICK_CALENDAR_EVENT, {
-										detail: { date, events },
+										detail: { date: new Date(formattedDate), events },
 										bubbles: true,
 									}),
 								);
