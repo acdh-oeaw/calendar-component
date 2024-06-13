@@ -1,5 +1,17 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.6
+
+### Patch Changes
+
+- [`2302db0`](https://github.com/acdh-oeaw/calendar-component/commit/2302db0101c9cf1771ddfbac6052e39c42861cb0)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - hide pseudo element when only 1 event
+  data
+
+- [`42b5916`](https://github.com/acdh-oeaw/calendar-component/commit/42b59160cb7563f9e1697c2f31363c4f50135527)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - serialise correct date in event
+  callback
+
 ## 0.0.5
 
 ### Patch Changes
