@@ -9,20 +9,16 @@
 				font-family: ui-sans-serif, system-ui, sans-serif;
 			}
 
-			acdh-ch-calendar {
-				--calendar-year-columns: 4;
+			acdh-ch-calendar-year td > button[data-event-kinds~="birthday"][data-event-kinds~="party"] {
+				--calendar-cell-color: dodgerblue;
 			}
 
-			acdh-ch-calendar-year td[data-event-kinds~="birthday"] {
-				--calendar-event-color: hotpink;
+			acdh-ch-calendar-year td > button[data-event-kinds="birthday"] {
+				--calendar-cell-color: hotpink;
 			}
 
-			acdh-ch-calendar-year td[data-event-kinds~="party"] {
-				--calendar-event-color: lime;
-			}
-
-			acdh-ch-calendar-year td[data-event-kinds~="birthday"][data-event-kinds~="party"] {
-				--calendar-event-color: dodgerblue;
+			acdh-ch-calendar-year td > button[data-event-kinds="party"] {
+				--calendar-cell-color: lime;
 			}
 		</style>
 	</head>
@@ -30,7 +26,7 @@
 		<div id="app">
 			<acdh-ch-calendar>
 				<label>
-					<span>Select a year: </span>
+					<div>Select a year</div>
 					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
 				</label>
 				<acdh-ch-calendar-year></acdh-ch-calendar-year>
