@@ -59,7 +59,7 @@
 
 		<script type="module">
 			import { register } from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/calendar.js";
-			import de from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/i18n/de";
+			import de from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/i18n/de.js";
 
 			/**
 			 * Defaults to radio group for selecting current calendar year.
@@ -72,6 +72,7 @@
 				const calendar = document.querySelector("acdh-ch-calendar");
 
 				if (i18n != null) {
+					/** Optionally set locale, defaults to english. */
 					calendar.setI18n(i18n);
 				}
 
