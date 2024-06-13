@@ -1,5 +1,13 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.5
+
+### Patch Changes
+
+- [#10](https://github.com/acdh-oeaw/calendar-component/pull/10)
+  [`1a34113`](https://github.com/acdh-oeaw/calendar-component/commit/1a34113c05db06bd91020db39aa36b9c6765c13b)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - improve calendar event styles
+
 ## 0.0.4
 
 ### Patch Changes
