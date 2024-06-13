@@ -95,7 +95,7 @@
 
 			async function request(url) {
 				const response = await fetch(url);
-				const event = await response.json();
+				const events = await response.json();
 				return events.map((event) => {
 					return { ...event, date: new Date(event.date) };
 				});
