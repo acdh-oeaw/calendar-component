@@ -10,10 +10,10 @@
 	"packageManager": "pnpm@9.3.0",
 	"main": "./dist/calendar.umd.cjs",
 	"module": "./dist/calendar.js",
-	"types": "./dist/main.d.ts",
+	"types": "./dist/calendar.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/main.d.ts",
+			"types": "./dist/calendar.d.ts",
 			"import": "./dist/calendar.js",
 			"require": "./dist/calendar.umd.cjs"
 		},

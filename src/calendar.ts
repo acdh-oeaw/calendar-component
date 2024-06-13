@@ -1,6 +1,6 @@
 import "./calendar.css";
 
-import { assert, groupByToMap, isoDate, range, unique } from "@acdh-oeaw/lib";
+import { assert, isoDate, range, unique } from "@acdh-oeaw/lib";
 
 import {
 	ELEMENT_CALENDAR_YEAR,
@@ -25,7 +25,7 @@ export interface CalendarEvent {
 
 export interface CalendarData {
 	events: Array<CalendarEvent>;
-	eventsByDate: Map<string, Array<CalendarEvent>>;
+	eventsByDate: Map<number, Map<string, Array<CalendarEvent>>>;
 	startYear: number | null;
 	endYear: number | null;
 }
@@ -63,7 +63,7 @@ export class Calendar extends HTMLElement {
 			// this.update();
 			this.calendar?.setData({
 				currentYear: this.currentYear,
-				eventsByDate: this.data.eventsByDate,
+				eventsByDate: this.data.eventsByDate.get(this.currentYear)!,
 			});
 		});
 
@@ -75,11 +75,28 @@ export class Calendar extends HTMLElement {
 		const startYear = dateRange.min.getUTCFullYear();
 		const endYear = dateRange.max.getUTCFullYear();
 
+		const eventsByDate = new Map<number, Map<string, Array<CalendarEvent>>>();
+
+		data.events.forEach((event) => {
+			const year = event.date.getUTCFullYear();
+			const date = isoDate(event.date);
+
+			if (!eventsByDate.has(year)) {
+				eventsByDate.set(year, new Map());
+			}
+
+			const byYear = eventsByDate.get(year)!;
+
+			if (!byYear.has(date)) {
+				byYear.set(date, [event]);
+			} else {
+				byYear.get(date)!.push(event);
+			}
+		});
+
 		this.data = {
 			events: data.events,
-			eventsByDate: groupByToMap(data.events, (event) => {
-				return isoDate(event.date);
-			}),
+			eventsByDate,
 			startYear,
 			endYear,
 		};
@@ -95,8 +112,8 @@ export class Calendar extends HTMLElement {
 
 		if (this.picker == null || this.calendar == null) return;
 
-		this.picker.setData({ startYear, endYear, currentYear });
-		this.calendar.setData({ currentYear, eventsByDate });
+		this.picker.setData({ startYear, endYear, currentYear, eventsByDate });
+		this.calendar.setData({ currentYear, eventsByDate: eventsByDate.get(currentYear)! });
 	}
 
 	setI18n(i18n: I18n) {
@@ -112,12 +129,15 @@ export interface CalendarYearPickerData {
 	startYear: number;
 	endYear: number;
 	currentYear: number;
+	eventsByDate: Map<number, Map<string, Array<CalendarEvent>>>;
 }
 
 //
 
 export class CalendarYearSelect extends HTMLElement {
 	data: CalendarYearPickerData | null;
+	/** Display full range of years, or only years with events. */
+	variant: "full" | "sparse" = "full";
 
 	constructor() {
 		super();
@@ -127,6 +147,10 @@ export class CalendarYearSelect extends HTMLElement {
 
 	connectedCallback() {
 		this.update();
+
+		if (this.dataset["variant"] === "sparse") {
+			this.variant = "sparse";
+		}
 	}
 
 	setData(data: CalendarYearPickerData) {
@@ -137,11 +161,13 @@ export class CalendarYearSelect extends HTMLElement {
 
 	update() {
 		if (this.data == null) return;
-		const { startYear, endYear, currentYear } = this.data;
+		const { startYear, endYear, currentYear, eventsByDate } = this.data;
 
 		const select = document.createElement("select");
 
 		range(startYear, endYear).forEach((year) => {
+			if (this.variant === "sparse" && !eventsByDate.has(year)) return;
+
 			const option = document.createElement("option");
 			option.value = String(year);
 			option.append(document.createTextNode(String(year)));
@@ -167,6 +193,8 @@ export class CalendarYearSelect extends HTMLElement {
 
 export class CalendarYearRadioGroup extends HTMLElement {
 	data: CalendarYearPickerData | null;
+	/** Display full range of years, or only years with events. */
+	variant: "full" | "sparse" = "full";
 	id: string;
 
 	constructor() {
@@ -178,6 +206,10 @@ export class CalendarYearRadioGroup extends HTMLElement {
 
 	connectedCallback() {
 		this.update();
+
+		if (this.dataset["variant"] === "sparse") {
+			this.variant = "sparse";
+		}
 	}
 
 	setData(data: CalendarYearPickerData) {
@@ -188,12 +220,14 @@ export class CalendarYearRadioGroup extends HTMLElement {
 
 	update() {
 		if (this.data == null) return;
-		const { startYear, endYear, currentYear } = this.data;
+		const { startYear, endYear, currentYear, eventsByDate } = this.data;
 
 		const radioGroup = document.createElement("div");
 		radioGroup.role = "radiogroup";
 
 		range(startYear, endYear).forEach((year) => {
+			if (this.variant === "sparse" && !eventsByDate.has(year)) return;
+
 			const label = document.createElement("label");
 
 			const input = document.createElement("input");
