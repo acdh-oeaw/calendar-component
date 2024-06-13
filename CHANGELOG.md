@@ -1,5 +1,14 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.4
+
+### Patch Changes
+
+- [#8](https://github.com/acdh-oeaw/calendar-component/pull/8)
+  [`2cdf7d4`](https://github.com/acdh-oeaw/calendar-component/commit/2cdf7d488805e45a91d6663d627fbe9c17d868e4)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - add sparse variant which omits years
+  without events
+
 ## 0.0.3
 
 ### Patch Changes
