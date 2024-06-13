@@ -1,5 +1,5 @@
-{
-	"months": [
+export const i18n = {
+	months: [
 		"January",
 		"February",
 		"March",
@@ -11,6 +11,6 @@
 		"September",
 		"October",
 		"November",
-		"December"
-	]
-}
+		"December",
+	],
+};

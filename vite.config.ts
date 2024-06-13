@@ -8,7 +8,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 export default defineConfig({
 	build: {
 		lib: {
-			entry: join(process.cwd(), "src", "main.ts"),
+			entry: join(process.cwd(), "src", "calendar.ts"),
 			name: "Calendar",
 			fileName: "calendar",
 			formats: ["es", "umd"],
@@ -47,7 +47,7 @@ export default defineConfig({
 		viteStaticCopy({
 			targets: [
 				{
-					src: "./src/i18n/*.json",
+					src: "./src/i18n/*.js",
 					dest: "./i18n/",
 				},
 			],
