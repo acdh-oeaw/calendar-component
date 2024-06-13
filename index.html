@@ -31,14 +31,14 @@
 			<acdh-ch-calendar>
 				<label>
 					<span>Select a year: </span>
-					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
+					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
 				</label>
 				<acdh-ch-calendar-year></acdh-ch-calendar-year>
 			</acdh-ch-calendar>
 		</div>
 
 		<script type="module">
-			import { register } from "/src/main.ts";
+			import { register } from "/src/calendar.ts";
 			import de from "/src/i18n/de.json";
 
 			register();
@@ -50,7 +50,7 @@
 
 			const events = [
 				{ date: new Date(Date.UTC(2021, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
-				{ date: new Date(Date.UTC(2022, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
+				// { date: new Date(Date.UTC(2022, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
 				{ date: new Date(Date.UTC(2023, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
 				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
 				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Geburtstagsparty", kind: "party" },

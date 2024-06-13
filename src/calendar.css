@@ -24,6 +24,10 @@
 	margin: 0;
 }
 
+:where(acdh-ch-calendar-year-picker label input[type="radio"]:disabled + span) {
+	cursor: not-allowed;
+}
+
 :where(acdh-ch-calendar-year) {
 	align-items: start;
 	display: grid;
