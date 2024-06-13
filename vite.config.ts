@@ -47,8 +47,12 @@ export default defineConfig({
 		viteStaticCopy({
 			targets: [
 				{
-					src: "./src/i18n/*.js",
+					src: "./src/i18n/*.ts",
 					dest: "./i18n/",
+					rename(fileName, fileExtension) {
+						const ext = ["de", "en"].includes(fileName) ? "js" : fileExtension;
+						return [fileName, ext].join(".");
+					},
 				},
 			],
 		}),

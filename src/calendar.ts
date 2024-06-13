@@ -12,7 +12,7 @@ import {
 import { createCalendar } from "./create-calendar.ts";
 import { getDateRange } from "./get-date-range.ts";
 import { getUniqueId } from "./get-unique-id.ts";
-import { i18n as labels } from "./i18n/en.js";
+import labels from "./i18n/en.ts";
 import type { I18n } from "./i18n/types.ts";
 
 export interface CalendarEvent {

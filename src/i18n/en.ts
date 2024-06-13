@@ -1,4 +1,4 @@
-export const i18n = {
+const i18n = {
 	months: [
 		"January",
 		"February",
@@ -14,3 +14,5 @@ export const i18n = {
 		"December",
 	],
 };
+
+export default i18n;

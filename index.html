@@ -35,7 +35,7 @@
 
 		<script type="module">
 			import { register } from "/src/calendar.ts";
-			import de from "/src/i18n/de.json";
+			import de from "/src/i18n/de.ts";
 
 			register();
 			// register({ picker: "select" });
@@ -58,7 +58,11 @@
 				const { date, events } = event.detail;
 
 				alert(
-					`Clicked ${date} with ${events.length} event(s): ${events.map((event) => event.label).join(", ")}.`,
+					`${date} mit ${events.length} Ereignissen:\n${events
+						.map((event) => {
+							return `- ${event.label}`;
+						})
+						.join("\n")}.`,
 				);
 			});
 		</script>

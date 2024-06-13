@@ -16,15 +16,34 @@
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds] {
-				--calendar-cell-color: dodgerblue;
+				--calendar-cell-color: #52525b;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="birthday"] {
-				--calendar-cell-color: hotpink;
+			acdh-ch-calendar-year td > button[data-event-kinds="person-9"] {
+				--calendar-cell-color: #d946ef;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="party"] {
-				--calendar-cell-color: lime;
+			acdh-ch-calendar-year td > button[data-event-kinds="person-10"] {
+				--calendar-cell-color: #d97706;
+			}
+
+			acdh-ch-calendar-year td > button[data-event-kinds="person-14"] {
+				--calendar-cell-color: #dc2626;
+			}
+
+			acdh-ch-calendar-year td > button[data-event-kinds="person-18"] {
+				--calendar-cell-color: #84cc16;
+			}
+
+			acdh-ch-calendar-year td > button[data-event-kinds="person-50"] {
+				--calendar-cell-color: #14b8a6;
+			}
+
+			acdh-ch-calendar-year td > button[data-event-kinds="erschlossen"] {
+				--calendar-cell-color: #3b82f6;
+			}
+			acdh-ch-calendar-year td > button[data-event-kinds="unknown"] {
+				--calendar-cell-color: #8b5cf6;
 			}
 		</style>
 	</head>
@@ -75,7 +94,7 @@
 
 			async function request(url) {
 				const response = await fetch(url);
-				const { event } = await response.json();
+				const event = await response.json();
 				return events.map((event) => {
 					return { ...event, date: new Date(event.date) };
 				});
