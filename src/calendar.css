@@ -1,22 +1,18 @@
 :where(acdh-ch-calendar) {
-	--calendar-event-color: transparent;
-	--calendar-year-columns: 3;
-
 	display: grid;
-	gap: 32px;
+	gap: 2rem;
 }
 
 :where(acdh-ch-calendar-year-picker div[role="radiogroup"]) {
 	align-items: center;
 	display: inline-flex;
 	flex-wrap: wrap;
-	column-gap: 8px;
-	row-gap: 4px;
+	gap: 0.25rem 0.5rem;
 }
 
 :where(acdh-ch-calendar-year-picker label) {
 	align-items: center;
-	column-gap: 4px;
+	column-gap: 0.25rem;
 	display: inline-flex;
 }
 
@@ -30,34 +26,59 @@
 
 :where(acdh-ch-calendar-year) {
 	align-items: start;
-	display: grid;
-	gap: 32px;
-	grid-template-columns: repeat(var(--calendar-year-columns), auto);
-	justify-content: start;
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 0.875rem;
+	gap: 2rem;
 	user-select: none;
 }
 
 :where(acdh-ch-calendar-year caption) {
 	font-weight: 600;
-	margin-block-end: 8px;
+	margin-block-end: 1rem;
 }
 
 :where(acdh-ch-calendar-year td) {
-	border-bottom: 2px solid var(--calendar-event-color);
-	padding: 4px;
-	text-align: right;
+	padding: 1px;
 }
 
-:where(acdh-ch-calendar-year td[data-event-kinds]) {
-	--calendar-event-color: black;
+:where(acdh-ch-calendar-year td > *) {
+	background-color: var(--calendar-cell-color);
+	border-radius: var(--calendar-cell-radius, 100%);
+	color: var(--calendar-cell-color-foreground);
+	font-weight: 500;
+	line-height: 2rem;
+	padding: 0;
+	text-align: center;
+	width: 2rem;
 }
 
-:where(acdh-ch-calendar-year td[data-event-kinds] button) {
+:where(acdh-ch-calendar-year td > button) {
 	appearance: none;
-	background: transparent;
 	border: none;
 	cursor: pointer;
-	font: inherit;
-	padding: 0;
-	text-align: inherit;
+	font-size: inherit;
+	position: relative;
+}
+
+:where(acdh-ch-calendar-year td > button[data-event-kinds]) {
+	--calendar-cell-color: hsl(330deg 100% 71%);
+	--calendar-cell-color-foreground: hsl(0deg 0% 100%);
+}
+
+:where(acdh-ch-calendar-year td > button[data-event-kinds])::after {
+	background-color: inherit;
+	border-radius: inherit;
+	border: 1px solid currentColor;
+	color: inherit;
+	content: attr(data-events-count);
+	display: grid;
+	font-size: 0.75rem;
+	height: 1.125rem;
+	line-height: 1;
+	place-content: center;
+	position: absolute;
+	right: -0.625rem;
+	top: -0.5rem;
+	width: 1.125rem;
 }

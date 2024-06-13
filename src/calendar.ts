@@ -323,13 +323,13 @@ export class CalendarYear extends HTMLElement {
 								}),
 							);
 
-							td.dataset["eventKinds"] = kinds.join(" ");
-							td.dataset["eventKindsCount"] = String(kinds.length);
-							td.dataset["eventsCount"] = String(events.length);
-
 							const button = document.createElement("button");
-							button.textContent = String(day);
 							button.ariaLabel = formattedDate;
+							button.append(document.createTextNode(String(day)));
+
+							button.dataset["eventKinds"] = kinds.join(" ");
+							button.dataset["eventKindsCount"] = String(kinds.length);
+							button.dataset["eventsCount"] = String(events.length);
 
 							button.addEventListener("click", () => {
 								this.dispatchEvent(
@@ -342,7 +342,9 @@ export class CalendarYear extends HTMLElement {
 
 							td.append(button);
 						} else {
-							td.textContent = String(day);
+							const div = document.createElement("div");
+							div.append(document.createTextNode(String(day)));
+							td.append(div);
 						}
 					}
 
