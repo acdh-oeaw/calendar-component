@@ -68,6 +68,17 @@
 		"vite-plugin-dts": "^3.9.1",
 		"vite-plugin-static-copy": "^1.0.5"
 	},
+	"pnpm": {
+		"overrides": {
+			"@commitlint/config-conventional": "$@commitlint/cli"
+		},
+		"updateConfig": {
+			"ignoreDependencies": [
+				"@commitlint/cli",
+				"eslint"
+			]
+		}
+	},
 	"commitlint": {
 		"extends": "@acdh-oeaw/commitlint-config"
 	},
