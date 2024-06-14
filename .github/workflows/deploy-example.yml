@@ -21,6 +21,8 @@ jobs:
       registry: "ghcr.io"
       public_url: "${{ vars.PUBLIC_URL }}"
       service_id: "${{ vars.SERVICE_ID }}"
+    steps:
+      - run: echo Building and deploying example page.
 
   build:
     name: Build and push docker image
