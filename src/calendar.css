@@ -27,6 +27,7 @@
 }
 
 :where(acdh-ch-calendar-year) {
+	align-content: start;
 	align-items: start;
 	display: flex;
 	flex-wrap: wrap;
