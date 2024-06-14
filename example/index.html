@@ -15,12 +15,41 @@
 				font-family: ui-sans-serif, system-ui, sans-serif;
 			}
 
+			body {
+				padding: 2rem;
+			}
+
+			acdh-ch-calendar {
+				display: grid;
+				gap: 4rem;
+			}
+
+			@media (min-width: 40rem) {
+				acdh-ch-calendar {
+					grid-template-columns: 14rem 1fr;
+				}
+			}
+
+			acdh-ch-calendar > label > span {
+				display: block;
+				font-weight: 600;
+				margin-block-end: 1rem;
+			}
+
+			acdh-ch-calendar-year-picker div[role="radiogroup"] {
+				gap: 0 2rem;
+			}
+
+			acdh-ch-calendar-year-picker div[role="radiogroup"] > label {
+				line-height: 2rem;
+			}
+
 			acdh-ch-calendar-year td > button[data-event-kinds] {
 				--calendar-cell-color: #52525b;
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds="person-9"] {
-				--calendar-cell-color: #d946ef;
+				--calendar-cell-color: #db2777;
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds="person-10"] {
@@ -28,11 +57,11 @@
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds="person-14"] {
-				--calendar-cell-color: #dc2626;
+				--calendar-cell-color: #e11d48;
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds="person-18"] {
-				--calendar-cell-color: #84cc16;
+				--calendar-cell-color: #0284c7;
 			}
 
 			acdh-ch-calendar-year td > button[data-event-kinds="person-50"] {
@@ -42,6 +71,7 @@
 			acdh-ch-calendar-year td > button[data-event-kinds="erschlossen"] {
 				--calendar-cell-color: #3b82f6;
 			}
+
 			acdh-ch-calendar-year td > button[data-event-kinds="unknown"] {
 				--calendar-cell-color: #8b5cf6;
 			}
@@ -49,13 +79,18 @@
 	</head>
 
 	<body>
-		<acdh-ch-calendar>
-			<label>
-				<span>Jahr</span>
-				<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
-			</label>
-			<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
-		</acdh-ch-calendar>
+		<main>
+			<h1>Beispiel-Kalender</h1>
+
+			<acdh-ch-calendar>
+				<label>
+					<span>Jahr</span>
+					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
+				</label>
+				<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
+				<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
+			</acdh-ch-calendar>
+		</main>
 
 		<script type="module">
 			import { register } from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/calendar.js";

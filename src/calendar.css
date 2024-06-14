@@ -1,5 +1,6 @@
 :where(acdh-ch-calendar) {
 	display: grid;
+	font-size: 0.875rem;
 	gap: 2rem;
 }
 
@@ -7,6 +8,7 @@
 	align-items: center;
 	display: inline-flex;
 	flex-wrap: wrap;
+	font-weight: 500;
 	gap: 0.25rem 0.5rem;
 }
 
@@ -28,7 +30,6 @@
 	align-items: start;
 	display: flex;
 	flex-wrap: wrap;
-	font-size: 0.875rem;
 	gap: 2rem;
 	user-select: none;
 }
