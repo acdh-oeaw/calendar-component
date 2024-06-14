@@ -1,5 +1,12 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.12
+
+### Patch Changes
+
+- [`e46e21b`](https://github.com/acdh-oeaw/calendar-component/commit/e46e21b5f9f1afc5b1a01aaa30581691f2c5c83d)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - align months to top
+
 ## 0.0.11
 
 ### Patch Changes
