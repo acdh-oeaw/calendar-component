@@ -44,6 +44,12 @@
 				line-height: 2rem;
 			}
 
+			/** When using tailwindcss, explicitly set text and background colors of events. */
+			acdh-ch-calendar-year td > * {
+				background-color: var(--calendar-cell-color);
+				color: var(--calendar-cell-color-foreground);
+			}
+
 			acdh-ch-calendar-year td > button[data-event-kinds] {
 				--calendar-cell-color: #52525b;
 			}

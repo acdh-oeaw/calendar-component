@@ -41,15 +41,19 @@
 }
 
 :where(acdh-ch-calendar-year td) {
+	font-weight: 500;
+	line-height: 2rem;
 	padding: 1px;
 }
 
 :where(acdh-ch-calendar-year td > *) {
+	aspect-ratio: 1;
 	background-color: var(--calendar-cell-color);
 	border-radius: var(--calendar-cell-radius, 100%);
 	color: var(--calendar-cell-color-foreground);
-	font-weight: 500;
-	line-height: 2rem;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
 	padding: 0;
 	text-align: center;
 	width: 2rem;
@@ -59,7 +63,6 @@
 	appearance: none;
 	border: none;
 	cursor: pointer;
-	font-size: inherit;
 	position: relative;
 }
 
