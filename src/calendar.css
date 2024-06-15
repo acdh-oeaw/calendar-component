@@ -63,6 +63,8 @@
 	appearance: none;
 	border: none;
 	cursor: pointer;
+	display: grid;
+	place-content: center;
 	position: relative;
 }
 
