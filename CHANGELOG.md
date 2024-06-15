@@ -1,5 +1,12 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.13
+
+### Patch Changes
+
+- [`03b2185`](https://github.com/acdh-oeaw/calendar-component/commit/03b218595fd19d25d705589564b9ce072812854f)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - improve tailwind compat
+
 ## 0.0.12
 
 ### Patch Changes
