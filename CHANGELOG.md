@@ -1,5 +1,12 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.14
+
+### Patch Changes
+
+- [`a07a09c`](https://github.com/acdh-oeaw/calendar-component/commit/a07a09c3e7c47e83e83001c0507585dbaf393f62)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - force center alignment on buttons
+
 ## 0.0.13
 
 ### Patch Changes
