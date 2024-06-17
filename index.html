@@ -52,7 +52,7 @@
 				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Geburtstagsparty", kind: "party" },
 			];
 
-			calendar.setData({ events });
+			calendar.setData({ events, currentYear: 2024 });
 
 			calendar.addEventListener("calendar-event-click", (event) => {
 				const { date, events } = event.detail;

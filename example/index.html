@@ -117,6 +117,8 @@
 					calendar.setI18n(i18n);
 				}
 
+				/** Optionally, set the initial year. */
+				// calendar.setData({ events, currentYear: 1708 });
 				calendar.setData({ events });
 
 				calendar.addEventListener("calendar-event-click", onEventClick);

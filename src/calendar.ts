@@ -70,7 +70,7 @@ export class Calendar extends HTMLElement {
 		this.update();
 	}
 
-	setData(data: CalendarData) {
+	setData(data: CalendarData & { currentYear?: number }) {
 		const dateRange = getDateRange(data.events);
 		const startYear = dateRange.min.getUTCFullYear();
 		const endYear = dateRange.max.getUTCFullYear();
@@ -100,7 +100,12 @@ export class Calendar extends HTMLElement {
 			startYear,
 			endYear,
 		};
-		this.currentYear = startYear;
+
+		if (data.currentYear != null && data.currentYear >= startYear && data.currentYear <= endYear) {
+			this.currentYear = data.currentYear;
+		} else {
+			this.currentYear = startYear;
+		}
 
 		this.update();
 	}
