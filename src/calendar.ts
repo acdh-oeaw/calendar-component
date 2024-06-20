@@ -118,7 +118,10 @@ export class Calendar extends HTMLElement {
 		if (this.picker == null || this.calendar == null) return;
 
 		this.picker.setData({ startYear, endYear, currentYear, eventsByDate });
-		this.calendar.setData({ currentYear, eventsByDate: eventsByDate.get(currentYear)! });
+		this.calendar.setData({
+			currentYear,
+			eventsByDate: eventsByDate.get(currentYear) ?? null,
+		});
 	}
 
 	setI18n(i18n: I18n) {
@@ -269,7 +272,7 @@ export class CalendarYearRadioGroup extends HTMLElement {
 
 export interface CalendarYearData {
 	currentYear: number;
-	eventsByDate: Map<string, Array<CalendarEvent>>;
+	eventsByDate: Map<string, Array<CalendarEvent>> | null;
 }
 
 export class CalendarYear extends HTMLElement {
@@ -317,7 +320,7 @@ export class CalendarYear extends HTMLElement {
 						date.setDate(day);
 						const formattedDate = isoDate(date);
 
-						if (eventsByDate.has(formattedDate)) {
+						if (eventsByDate?.has(formattedDate)) {
 							const events = eventsByDate.get(formattedDate)!;
 
 							const kinds = unique(
