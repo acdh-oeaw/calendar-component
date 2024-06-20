@@ -1,5 +1,12 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.16
+
+### Patch Changes
+
+- [`6456846`](https://github.com/acdh-oeaw/calendar-component/commit/6456846e0bc15e2701ee3032a9ad7c0dea0b2b87)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - handle empty years
+
 ## 0.0.15
 
 ### Patch Changes
