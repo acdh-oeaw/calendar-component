@@ -83,10 +83,23 @@
 				--calendar-cell-color: #8b5cf6;
 			}
 
+			acdh-ch-calendar:not(:defined) {
+				gap: 0;
+				grid-template-columns: 1fr;
+			}
+
+			acdh-ch-calendar:not(:defined) > label {
+				display: none;
+			}
+
 			[data-loading-indicator] {
 				display: grid;
-				min-height: 12rem;
+				padding-block: 12rem;
 				place-content: center;
+			}
+
+			acdh-ch-calendar:defined [data-loading-indicator] {
+				display: none;
 			}
 		</style>
 	</head>
@@ -98,16 +111,11 @@
 			<acdh-ch-calendar>
 				<label>
 					<span>Jahr</span>
-					<acdh-ch-calendar-year-picker>
-						<select>
-							<option selected disabled>Loading...</option>
-						</select>
-					</acdh-ch-calendar-year-picker>
+					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
 				</label>
 				<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
-				<acdh-ch-calendar-year data-variant="sparse">
-					<div data-loading-indicator>Loading...</div>
-				</acdh-ch-calendar-year>
+				<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
+				<div data-loading-indicator>Loading...</div>
 			</acdh-ch-calendar>
 		</main>
 
