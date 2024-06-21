@@ -13,6 +13,7 @@
 		<style>
 			:root {
 				font-family: ui-sans-serif, system-ui, sans-serif;
+				font-size: 0.875rem;
 			}
 
 			body {
@@ -81,6 +82,12 @@
 			acdh-ch-calendar-year td > button[data-event-kinds="unknown"] {
 				--calendar-cell-color: #8b5cf6;
 			}
+
+			[data-loading-indicator] {
+				display: grid;
+				min-height: 12rem;
+				place-content: center;
+			}
 		</style>
 	</head>
 
@@ -91,10 +98,16 @@
 			<acdh-ch-calendar>
 				<label>
 					<span>Jahr</span>
-					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
+					<acdh-ch-calendar-year-picker>
+						<select>
+							<option selected disabled>Loading...</option>
+						</select>
+					</acdh-ch-calendar-year-picker>
 				</label>
 				<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
-				<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
+				<acdh-ch-calendar-year data-variant="sparse">
+					<div data-loading-indicator>Loading...</div>
+				</acdh-ch-calendar-year>
 			</acdh-ch-calendar>
 		</main>
 
