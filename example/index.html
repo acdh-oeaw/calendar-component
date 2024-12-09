@@ -45,6 +45,10 @@
 				line-height: 2rem;
 			}
 
+			acdh-ch-calendar-year-picker label input[type="radio"]:disabled + span {
+				opacity: 0.75;
+			}
+
 			/** When using tailwindcss, explicitly set text and background colors of events. */
 			acdh-ch-calendar-year td > * {
 				background-color: var(--calendar-cell-color);
@@ -111,10 +115,10 @@
 			<acdh-ch-calendar>
 				<label>
 					<span>Jahr</span>
-					<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
+					<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
+					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
 				</label>
-				<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
-				<acdh-ch-calendar-year data-variant="sparse"></acdh-ch-calendar-year>
+				<acdh-ch-calendar-year></acdh-ch-calendar-year>
 				<div data-loading-indicator>Loading...</div>
 			</acdh-ch-calendar>
 		</main>
