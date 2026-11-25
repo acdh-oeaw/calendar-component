@@ -1,20 +1,18 @@
 import { join } from "node:path";
 
-import { transform } from "esbuild";
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
+import { defineConfig, minify } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
 	build: {
 		lib: {
-			entry: join(process.cwd(), "src", "calendar.ts"),
+			entry: join(process.cwd(), "src", "index.ts"),
 			name: "Calendar",
 			fileName: "calendar",
 			formats: ["es", "umd"],
 		},
 		/** @see https://github.com/vitejs/vite/issues/4863#issuecomment-1005451468 */
-		rollupOptions: {
+		rolldownOptions: {
 			output: {
 				assetFileNames(assetInfo) {
 					if (assetInfo.name === "style.css") return "calendar.css";
@@ -31,19 +29,20 @@ export default defineConfig({
 		 */
 		{
 			name: "minify",
-			renderChunk: {
+			generateBundle: {
 				order: "post",
-				async handler(code, chunk, options) {
-					if (options.format === "es" && chunk.fileName.endsWith(".js")) {
-						return await transform(code, { minify: true });
+				async handler(options, bundle) {
+					if (options.format !== "es") return;
+
+					for (const chunk of Object.values(bundle)) {
+						if (chunk.type === "chunk" && chunk.fileName.endsWith(".js")) {
+							const result = await minify(chunk.fileName, chunk.code, { module: true });
+							chunk.code = result.code;
+						}
 					}
-					return code;
 				},
 			},
 		},
-		dts({
-			include: ["src"],
-		}),
 		viteStaticCopy({
 			targets: [
 				{
@@ -51,7 +50,7 @@ export default defineConfig({
 					dest: "./i18n/",
 					rename(fileName, fileExtension) {
 						const ext = ["de", "en"].includes(fileName) ? "js" : fileExtension;
-						return [fileName, ext].join(".");
+						return { name: [fileName, ext].join("."), stripBase: true };
 					},
 				},
 			],

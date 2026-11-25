@@ -1,8 +1,9 @@
 {
-	"$schema": "https://unpkg.com/@changesets/config@3.0.1/schema.json",
+	"$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
 	"access": "public",
 	"baseBranch": "main",
 	"changelog": ["@changesets/changelog-github", { "repo": "acdh-oeaw/calendar-component" }],
 	"commit": false,
+	"format": "oxfmt",
 	"updateInternalDependencies": "patch"
 }

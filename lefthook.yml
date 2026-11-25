@@ -1,0 +1,15 @@
+pre-commit:
+  piped: true
+  jobs:
+    - name: lint
+      glob: "*.ts"
+      run: pnpm exec oxlint --fix --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    - name: format
+      run: pnpm exec oxfmt --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: validate
+      run: pnpm run validate

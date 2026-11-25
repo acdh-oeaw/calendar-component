@@ -2,12 +2,24 @@
 	"name": "@acdh-oeaw/calendar-component",
 	"version": "0.0.16",
 	"license": "MIT",
-	"type": "module",
-	"engines": {
-		"node": ">=20.14",
-		"pnpm": "9.x"
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/acdh-oeaw/calendar-component.git"
 	},
-	"packageManager": "pnpm@9.4.0",
+	"type": "module",
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "~12.23.0",
+			"onFail": "error"
+		},
+		"runtime": {
+			"name": "node",
+			"version": ">=26",
+			"onFail": "error"
+		}
+	},
+	"packageManager": "pnpm@12.23.0",
 	"main": "./dist/calendar.umd.cjs",
 	"module": "./dist/calendar.js",
 	"types": "./dist/calendar.d.ts",
@@ -25,77 +37,40 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "vite build",
+		"build": "vite build && tsc --project tsconfig.build.json",
 		"changeset:add": "changeset add",
 		"changeset:status": "changeset status --verbose",
 		"ci:release": "changeset publish",
-		"ci:version": "changeset version && prettier \"**/CHANGELOG.md\" --write",
+		"ci:version": "changeset version",
 		"dev": "vite dev",
-		"format:check": "prettier . --cache --check --ignore-path ./.gitignore",
-		"format:fix": "pnpm run format:check --write",
-		"lint:check": "eslint . --cache --ignore-path ./.gitignore",
-		"lint:fix": "pnpm run lint:check --fix",
+		"format:check": "oxfmt --check",
+		"format:fix": "oxfmt",
+		"lint:check": "oxlint",
+		"lint:fix": "oxlint --fix",
 		"prepare": "run-s setup",
 		"prepublishOnly": "run-s validate build",
-		"setup": "is-ci || simple-git-hooks",
+		"setup": "is-in-ci || lefthook install",
 		"start": "vite preview",
-		"test": "node --import tsx --test ./src/*.test.ts",
+		"test": "node --test ./src/*.test.ts",
 		"types:check": "tsc --noEmit",
 		"validate": "run-p format:check lint:check types:check test"
 	},
-	"dependencies": {
-		"@acdh-oeaw/lib": "^0.1.12"
-	},
 	"devDependencies": {
-		"@acdh-oeaw/commitlint-config": "^1.0.0",
-		"@acdh-oeaw/eslint-config": "^1.0.7",
-		"@acdh-oeaw/prettier-config": "^2.0.0",
-		"@acdh-oeaw/tsconfig-lib": "^1.0.1",
-		"@changesets/changelog-github": "^0.5.0",
-		"@changesets/cli": "^2.27.5",
-		"@commitlint/cli": "^18.6.1",
-		"@types/node": "^20.14.2",
-		"esbuild": "^0.21.5",
-		"eslint": "^8.57.0",
-		"is-ci": "^3.0.1",
-		"lint-staged": "^15.2.7",
-		"npm-run-all2": "^6.2.0",
-		"prettier": "^3.3.2",
-		"simple-git-hooks": "^2.11.1",
-		"tsx": "^4.15.6",
-		"typescript": "^5.4.5",
-		"vite": "^5.3.1",
-		"vite-plugin-dts": "^3.9.1",
-		"vite-plugin-static-copy": "^1.0.5"
-	},
-	"pnpm": {
-		"overrides": {
-			"@commitlint/config-conventional": "$@commitlint/cli"
-		},
-		"updateConfig": {
-			"ignoreDependencies": [
-				"@commitlint/cli",
-				"eslint"
-			]
-		}
-	},
-	"commitlint": {
-		"extends": "@acdh-oeaw/commitlint-config"
-	},
-	"eslintConfig": {
-		"extends": "@acdh-oeaw/eslint-config"
-	},
-	"lint-staged": {
-		"*.ts": [
-			"eslint --cache --fix",
-			"prettier --cache --write"
-		],
-		"*": "prettier --cache --ignore-unknown --write"
-	},
-	"prettier": "@acdh-oeaw/prettier-config",
-	"simple-git-hooks": {
-		"commit-msg": "pnpm exec commitlint --edit",
-		"pre-commit": "pnpm exec lint-staged",
-		"pre-push": "pnpm run validate"
+		"@acdh-oeaw/lib": "^0.3.7",
+		"@acdh-oeaw/tsconfig-lib": "^1.3.0",
+		"@changesets/changelog-github": "^1.0.1",
+		"@changesets/cli": "^3.0.3",
+		"@types/jsdom": "^30.0.0",
+		"@types/node": "^26.6.6",
+		"is-in-ci": "^2.0.0",
+		"jsdom": "^31.0.1",
+		"lefthook": "^2.2.2",
+		"npm-run-all2": "^9.1.0",
+		"oxfmt": "^0.80.0",
+		"oxlint": "^1.95.0",
+		"oxlint-tsgolint": "^7.0.2008",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.8",
+		"vite-plugin-static-copy": "^4.1.1"
 	}
 }
