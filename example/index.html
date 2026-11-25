@@ -20,86 +20,86 @@
 				padding: 2rem;
 			}
 
-			acdh-ch-calendar {
+			acdh-calendar {
 				display: grid;
 				gap: 4rem;
 			}
 
 			@media (min-width: 40rem) {
-				acdh-ch-calendar {
+				acdh-calendar {
 					grid-template-columns: 14rem 1fr;
 				}
 			}
 
-			acdh-ch-calendar > fieldset {
+			acdh-calendar > fieldset {
 				border: none;
 				margin: 0;
 				min-inline-size: 0;
 				padding: 0;
 			}
 
-			acdh-ch-calendar > fieldset > legend {
+			acdh-calendar > fieldset > legend {
 				font-weight: 600;
 				margin-block-end: 1rem;
 				padding: 0;
 			}
 
-			acdh-ch-calendar-year-picker div[role="radiogroup"] {
+			acdh-calendar-year-radio-group div[role="radiogroup"] {
 				gap: 0 2rem;
 			}
 
-			acdh-ch-calendar-year-picker div[role="radiogroup"] > label {
+			acdh-calendar-year-radio-group div[role="radiogroup"] > label {
 				line-height: 2rem;
 			}
 
-			acdh-ch-calendar-year-picker label input[type="radio"]:disabled + span {
+			acdh-calendar-year-radio-group label input[type="radio"]:disabled + span {
 				opacity: 0.75;
 			}
 
 			/** When using tailwindcss, explicitly set text and background colors of events. */
-			acdh-ch-calendar-year td > * {
+			acdh-calendar-year td > * {
 				background-color: var(--calendar-cell-color);
 				color: var(--calendar-cell-color-foreground);
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds] {
+			acdh-calendar-year td > button[data-event-kinds] {
 				--calendar-cell-color: #52525b;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="person-9"] {
+			acdh-calendar-year td > button[data-event-kinds="person-9"] {
 				--calendar-cell-color: #db2777;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="person-10"] {
+			acdh-calendar-year td > button[data-event-kinds="person-10"] {
 				--calendar-cell-color: #d97706;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="person-14"] {
+			acdh-calendar-year td > button[data-event-kinds="person-14"] {
 				--calendar-cell-color: #e11d48;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="person-18"] {
+			acdh-calendar-year td > button[data-event-kinds="person-18"] {
 				--calendar-cell-color: #0284c7;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="person-50"] {
+			acdh-calendar-year td > button[data-event-kinds="person-50"] {
 				--calendar-cell-color: #14b8a6;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="erschlossen"] {
+			acdh-calendar-year td > button[data-event-kinds="erschlossen"] {
 				--calendar-cell-color: #3b82f6;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="unknown"] {
+			acdh-calendar-year td > button[data-event-kinds="unknown"] {
 				--calendar-cell-color: #8b5cf6;
 			}
 
-			acdh-ch-calendar:not(:defined) {
+			acdh-calendar:not(:defined) {
 				gap: 0;
 				grid-template-columns: 1fr;
 			}
 
-			acdh-ch-calendar:not(:defined) > fieldset {
+			acdh-calendar:not(:defined) > fieldset {
 				display: none;
 			}
 
@@ -109,7 +109,7 @@
 				place-content: center;
 			}
 
-			acdh-ch-calendar:defined [data-loading-indicator] {
+			acdh-calendar:defined [data-loading-indicator] {
 				display: none;
 			}
 		</style>
@@ -119,40 +119,37 @@
 		<main>
 			<h1>Beispiel-Kalender</h1>
 
-			<acdh-ch-calendar>
-				<!-- When displaying a `<select>`, use a `<label>` instead. -->
+			<!-- Optionally, set the initial year. -->
+			<acdh-calendar year="1680">
+				<!--
+					To display a `<select>` instead, use `<acdh-calendar-year-select>`, and a `<label>` instead
+					of a `<fieldset>`.
+				-->
 				<fieldset>
 					<legend>Jahr</legend>
-					<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
-					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
+					<!-- To disallow selecting years without events, use `sparse`. -->
+					<acdh-calendar-year-radio-group sparse></acdh-calendar-year-radio-group>
 				</fieldset>
-				<acdh-ch-calendar-year></acdh-ch-calendar-year>
+				<acdh-calendar-year></acdh-calendar-year>
 				<div data-loading-indicator>Loading...</div>
-			</acdh-ch-calendar>
+			</acdh-calendar>
 		</main>
 
 		<script type="module">
 			import { register } from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/calendar.js";
 			import de from "https://unpkg.com/@acdh-oeaw/calendar-component@0/dist/i18n/de.js";
 
-			/**
-			 * Defaults to radio group for selecting current calendar year.
-			 *
-			 * To display a `<select>` instead, use `register({ picker: "select" });`.
-			 */
 			register();
 
 			function createCalendar(i18n, events, onEventClick) {
-				const calendar = document.querySelector("acdh-ch-calendar");
+				const calendar = document.querySelector("acdh-calendar");
 
 				if (i18n != null) {
 					/** Optionally set locale, defaults to english. */
-					calendar.setI18n(i18n);
+					calendar.i18n = i18n;
 				}
 
-				/** Optionally, set the initial year. */
-				calendar.setData({ events, currentYear: 1680 });
-				// calendar.setData({ events });
+				calendar.events = events;
 
 				calendar.addEventListener("calendar-event-click", onEventClick);
 			}
