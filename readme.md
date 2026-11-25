@@ -65,15 +65,3 @@ is `null`, and nothing is displayed.
 
 to create a custom year picker, dispatch a bubbling `calendar-year-select` event with `{ year }` as
 detail from any element inside of `<acdh-calendar>`.
-
-## deprecated
-
-these still work, but will be removed in a future version:
-
-- `<acdh-ch-calendar>` and `<acdh-ch-calendar-year>`: use `<acdh-calendar>` and
-  `<acdh-calendar-year>`, also in css selectors.
-- `setData()` and `currentYear`: use `events` and `year`.
-- `setI18n()`: use `i18n`.
-- `<acdh-ch-calendar-year-picker>` and `register({ picker })`: use
-  `<acdh-calendar-year-radio-group>` or `<acdh-calendar-year-select>`.
-- `data-variant="sparse"`: use `sparse`.

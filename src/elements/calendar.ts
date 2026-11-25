@@ -1,10 +1,10 @@
 import { isoDate, range } from "@acdh-oeaw/lib";
 
-import { EVENT_CHANGE_YEAR, EVENT_SELECT_YEAR, SELECTOR_ROOT } from "../constants.ts";
+import { ELEMENT_ROOT, EVENT_CHANGE_YEAR, EVENT_SELECT_YEAR } from "../constants.ts";
 import { getDateRange } from "../get-date-range.ts";
 import en from "../i18n/en.ts";
 import type { I18n } from "../i18n/types.ts";
-import type { CalendarEvent, CalendarInput, CalendarYearEventDetail } from "../types.ts";
+import type { CalendarEvent, CalendarYearEventDetail } from "../types.ts";
 import { HTMLElementBase } from "./html-element.ts";
 
 type EventsByDate = Map<string, Array<CalendarEvent>>;
@@ -29,7 +29,7 @@ export class Calendar extends HTMLElementBase {
 
 		this.addEventListener(EVENT_SELECT_YEAR, (event) => {
 			/** Ignore events from nested calendars. */
-			if ((event.target as Element).closest(SELECTOR_ROOT) !== this) return;
+			if ((event.target as Element).closest(ELEMENT_ROOT) !== this) return;
 
 			this.#selectYear(event.detail.year);
 		});
@@ -139,30 +139,6 @@ export class Calendar extends HTMLElementBase {
 		);
 
 		subscriber();
-	}
-
-	/** @deprecated Use the `year` property instead. */
-	get currentYear(): number | null {
-		return this.year;
-	}
-
-	set currentYear(year: number | null) {
-		this.year = year;
-	}
-
-	/** @deprecated Set the `events` and `year` properties instead. */
-	setData(data: CalendarInput) {
-		this.events = data.events;
-		this.year = data.currentYear ?? null;
-
-		this.#update();
-	}
-
-	/** @deprecated Set the `i18n` property instead. */
-	setI18n(i18n: I18n) {
-		this.i18n = i18n;
-
-		this.#update();
 	}
 
 	#selectYear(year: number) {

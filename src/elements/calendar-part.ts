@@ -1,4 +1,4 @@
-import { SELECTOR_ROOT } from "../constants.ts";
+import { ELEMENT_ROOT } from "../constants.ts";
 import type { Calendar } from "./calendar.ts";
 import { HTMLElementBase } from "./html-element.ts";
 
@@ -14,13 +14,13 @@ export abstract class CalendarPart extends HTMLElementBase {
 
 		const { signal } = this.#controller;
 
-		const calendar = this.closest<Calendar>(SELECTOR_ROOT);
+		const calendar = this.closest<Calendar>(ELEMENT_ROOT);
 		if (calendar == null) return;
 
-		if (customElements.get(calendar.localName) != null) {
+		if (customElements.get(ELEMENT_ROOT) != null) {
 			this.#connect(calendar, signal);
 		} else {
-			void customElements.whenDefined(calendar.localName).then(() => {
+			void customElements.whenDefined(ELEMENT_ROOT).then(() => {
 				this.#connect(calendar, signal);
 			});
 		}
