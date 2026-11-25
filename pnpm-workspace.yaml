@@ -1,0 +1,8 @@
+allowBuilds:
+  lefthook: false
+
+autoDedupe: true
+
+engineStrict: true
+
+shellEmulator: true

@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"endOfLine": "lf",
+	"printWidth": 100,
+	"proseWrap": "always",
+	"semi": true,
+	"singleQuote": false,
+	"sortImports": {
+		"groups": [
+			"side_effect",
+			"builtin",
+			"external",
+			["internal", "subpath"],
+			["parent", "sibling", "index"],
+			"unknown"
+		]
+	},
+	"sortPackageJson": false,
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"useTabs": true
+}

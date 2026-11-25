@@ -1,5 +1,3 @@
-import "./calendar.css";
-
 import { assert, isoDate, range, unique } from "@acdh-oeaw/lib";
 
 import {
