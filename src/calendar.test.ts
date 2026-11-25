@@ -1,24 +1,16 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, test } from "node:test";
 
-import { JSDOM } from "jsdom";
-
-import type { Calendar, CalendarData, CalendarEvent, CalendarYear } from "./calendar.ts";
-import type { I18n } from "./i18n/types.ts";
+import type { Calendar, CalendarData, CalendarEvent } from "./calendar.ts";
+import { setupDom } from "./testing/setup-dom.ts";
 
 /** Custom elements extend `HTMLElement`, so globals must exist before the module is evaluated. */
-const { window } = new JSDOM();
-Object.assign(globalThis, {
-	customElements: window.customElements,
-	CustomEvent: window.CustomEvent,
-	document: window.document,
-	Event: window.Event,
-	HTMLElement: window.HTMLElement,
-});
+setupDom();
 
-const { CalendarYearSelect, register } = await import("./calendar.ts");
+const { register } = await import("./calendar.ts");
 const { default: de } = await import("./i18n/de.ts");
 
+/** Uses the deprecated api, to ensure it keeps working. */
 register();
 
 const template = `
@@ -77,7 +69,7 @@ void describe("calendar year", () => {
 		calendar.setI18n(de);
 		calendar.setData({ events: [createEvent("2024-09-26")] });
 
-		assert.deepEqual(getCaptions(), (de satisfies I18n).months);
+		assert.deepEqual(getCaptions(), de.months);
 	});
 
 	void test("should group events on the same day", () => {
@@ -162,7 +154,7 @@ void describe("calendar year", () => {
 					return Array.from(table.querySelectorAll<HTMLButtonElement>("td > button"), (button) => {
 						const day = Number(button.textContent);
 						const date = new Date(Date.UTC(year, month, day)).toISOString().slice(0, 10);
-						assert.equal(button.getAttribute("aria-label") ?? button.ariaLabel, date);
+						assert.equal(button.dataset["date"], date);
 						return date;
 					});
 				});
@@ -334,7 +326,7 @@ void describe("radio group picker", () => {
 
 		assert.deepEqual(years, [2024]);
 		assert.equal(calendar.currentYear, 2024);
-		assert.equal(getButtons()[0]!.ariaLabel, "2024-09-26");
+		assert.equal(getButtons()[0]!.dataset["date"], "2024-09-26");
 	});
 
 	void test("should use distinct names for multiple calendars", () => {
@@ -350,88 +342,4 @@ void describe("radio group picker", () => {
 		);
 		assert.equal(names.size, 2);
 	});
-});
-
-void describe("select picker", () => {
-	/** Elements can only be registered once, so use a different name than the default picker. */
-	customElements.define("test-calendar-year-select", CalendarYearSelect);
-
-	const data = {
-		startYear: 2021,
-		endYear: 2024,
-		currentYear: 2024,
-		eventsByDate: new Map([
-			[2021, new Map<string, Array<CalendarEvent>>()],
-			[2024, new Map<string, Array<CalendarEvent>>()],
-		]),
-	};
-
-	function renderPicker(html: string) {
-		document.body.innerHTML = html;
-		const picker = document.querySelector<InstanceType<typeof CalendarYearSelect>>(
-			"test-calendar-year-select",
-		);
-		assert(picker);
-		picker.setData(data);
-		const select = picker.querySelector("select");
-		assert(select);
-		return { picker, select };
-	}
-
-	function getValues(select: HTMLSelectElement) {
-		return Array.from(select.options, (option) => {
-			return option.value;
-		});
-	}
-
-	void test("should display all years in range", () => {
-		const { select } = renderPicker("<test-calendar-year-select></test-calendar-year-select>");
-
-		assert.deepEqual(getValues(select), ["2021", "2022", "2023", "2024"]);
-		assert.equal(select.value, "2024");
-	});
-
-	void test("should omit years without events in sparse variant", () => {
-		const { select } = renderPicker(
-			'<test-calendar-year-select data-variant="sparse"></test-calendar-year-select>',
-		);
-
-		assert.deepEqual(getValues(select), ["2021", "2024"]);
-	});
-
-	void test("should dispatch bubbling event on change", () => {
-		const { select } = renderPicker("<test-calendar-year-select></test-calendar-year-select>");
-
-		const years: Array<number> = [];
-		document.body.addEventListener(
-			"calendar-year-select",
-			(event) => {
-				years.push((event as CustomEvent<{ year: number }>).detail.year);
-			},
-			{ once: true },
-		);
-
-		select.value = "2021";
-		select.dispatchEvent(new Event("change", { bubbles: true }));
-
-		assert.deepEqual(years, [2021]);
-	});
-
-	void test("should clear picker when data is removed", () => {
-		const { picker } = renderPicker("<test-calendar-year-select></test-calendar-year-select>");
-
-		picker.setData(null);
-
-		assert.equal(picker.childElementCount, 0);
-	});
-});
-
-void test("should clear calendar year when data is removed", () => {
-	render().setData({ events: [createEvent("2024-09-26")] });
-	const year = document.querySelector<CalendarYear>("acdh-ch-calendar-year");
-	assert(year);
-
-	year.setData(null);
-
-	assert.equal(year.childElementCount, 0);
 });

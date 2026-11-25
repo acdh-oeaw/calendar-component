@@ -9,28 +9,28 @@
 				font-family: ui-sans-serif, system-ui, sans-serif;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds] {
+			acdh-calendar-year td > button[data-event-kinds] {
 				--calendar-cell-color: dodgerblue;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="birthday"] {
+			acdh-calendar-year td > button[data-event-kinds="birthday"] {
 				--calendar-cell-color: hotpink;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="party"] {
+			acdh-calendar-year td > button[data-event-kinds="party"] {
 				--calendar-cell-color: lime;
 			}
 		</style>
 	</head>
 	<body>
 		<div id="app">
-			<acdh-ch-calendar>
+			<acdh-calendar year="2024">
 				<fieldset>
 					<legend>Select a year</legend>
-					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
+					<acdh-calendar-year-radio-group sparse></acdh-calendar-year-radio-group>
 				</fieldset>
-				<acdh-ch-calendar-year></acdh-ch-calendar-year>
-			</acdh-ch-calendar>
+				<acdh-calendar-year weekdays></acdh-calendar-year>
+			</acdh-calendar>
 		</div>
 
 		<script type="module">
@@ -38,11 +38,10 @@
 			import { register } from "/src/index.ts";
 
 			register();
-			// register({ picker: "select" });
 
-			const calendar = document.querySelector("acdh-ch-calendar");
+			const calendar = document.querySelector("acdh-calendar");
 
-			calendar.setI18n(de);
+			calendar.i18n = de;
 
 			const events = [
 				{ date: new Date(Date.UTC(2021, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
@@ -52,7 +51,7 @@
 				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Geburtstagsparty", kind: "party" },
 			];
 
-			calendar.setData({ events, currentYear: 2024 });
+			calendar.events = events;
 
 			calendar.addEventListener("calendar-event-click", (event) => {
 				const { date, events } = event.detail;
