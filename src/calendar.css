@@ -4,7 +4,8 @@
 	gap: 2rem;
 }
 
-:where(acdh-ch-calendar-year-picker div[role="radiogroup"]) {
+:where(acdh-ch-calendar-year-picker, acdh-ch-calendar-year-radio-group)
+	:where(div[role="radiogroup"]) {
 	align-items: center;
 	display: inline-flex;
 	flex-wrap: wrap;
@@ -12,17 +13,19 @@
 	gap: 0.25rem 0.5rem;
 }
 
-:where(acdh-ch-calendar-year-picker label) {
+:where(acdh-ch-calendar-year-picker, acdh-ch-calendar-year-radio-group) :where(label) {
 	align-items: center;
 	column-gap: 0.25rem;
 	display: inline-flex;
 }
 
-:where(acdh-ch-calendar-year-picker label input[type="radio"]) {
+:where(acdh-ch-calendar-year-picker, acdh-ch-calendar-year-radio-group)
+	:where(label input[type="radio"]) {
 	margin: 0;
 }
 
-:where(acdh-ch-calendar-year-picker label input[type="radio"]:disabled + span) {
+:where(acdh-ch-calendar-year-picker, acdh-ch-calendar-year-radio-group)
+	:where(label input[type="radio"]:disabled + span) {
 	cursor: not-allowed;
 }
 
@@ -35,18 +38,30 @@
 	user-select: none;
 }
 
-:where(acdh-ch-calendar-year caption) {
+:where(acdh-ch-calendar-month) {
+	display: block;
+	user-select: none;
+}
+
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(caption) {
 	font-weight: 600;
 	margin-block-end: 1rem;
 }
 
-:where(acdh-ch-calendar-year td) {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(th) {
+	font-size: 0.75rem;
+	font-weight: 500;
+	padding: 1px;
+	text-align: center;
+}
+
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(td) {
 	font-weight: 500;
 	line-height: 2rem;
 	padding: 1px;
 }
 
-:where(acdh-ch-calendar-year td > *) {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(td > *) {
 	aspect-ratio: 1;
 	background-color: var(--calendar-cell-color);
 	border-radius: var(--calendar-cell-radius, 100%);
@@ -59,7 +74,7 @@
 	width: 2rem;
 }
 
-:where(acdh-ch-calendar-year td > button) {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(td > button) {
 	appearance: none;
 	border: none;
 	cursor: pointer;
@@ -68,12 +83,12 @@
 	position: relative;
 }
 
-:where(acdh-ch-calendar-year td > button[data-event-kinds]) {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(td > button[data-event-kinds]) {
 	--calendar-cell-color: hsl(330deg 100% 71%);
 	--calendar-cell-color-foreground: hsl(0deg 0% 100%);
 }
 
-:where(acdh-ch-calendar-year td > button[data-event-kinds])::after {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month) :where(td > button[data-event-kinds])::after {
 	background-color: inherit;
 	border-radius: inherit;
 	border: 1px solid currentColor;
@@ -90,6 +105,7 @@
 	width: 1.125rem;
 }
 
-:where(acdh-ch-calendar-year td > button[data-events-count="1"])::after {
+:where(acdh-ch-calendar-year, acdh-ch-calendar-month)
+	:where(td > button[data-events-count="1"])::after {
 	display: none;
 }

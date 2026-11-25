@@ -13,6 +13,9 @@ const i18n = {
 		"November",
 		"Dezember",
 	],
+	weekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+	event: "Ereignis",
+	events: "Ereignisse",
 };
 
 export default i18n;

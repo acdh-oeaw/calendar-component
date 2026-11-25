@@ -24,12 +24,12 @@
 	</head>
 	<body>
 		<div id="app">
-			<acdh-ch-calendar>
+			<acdh-ch-calendar year="2024">
 				<fieldset>
 					<legend>Select a year</legend>
-					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
+					<acdh-ch-calendar-year-radio-group sparse></acdh-ch-calendar-year-radio-group>
 				</fieldset>
-				<acdh-ch-calendar-year></acdh-ch-calendar-year>
+				<acdh-ch-calendar-year weekdays></acdh-ch-calendar-year>
 			</acdh-ch-calendar>
 		</div>
 
@@ -38,11 +38,10 @@
 			import { register } from "/src/index.ts";
 
 			register();
-			// register({ picker: "select" });
 
 			const calendar = document.querySelector("acdh-ch-calendar");
 
-			calendar.setI18n(de);
+			calendar.i18n = de;
 
 			const events = [
 				{ date: new Date(Date.UTC(2021, 8, 26)), label: "Mein Geburtstag", kind: "birthday" },
@@ -52,7 +51,7 @@
 				{ date: new Date(Date.UTC(2024, 8, 26)), label: "Geburtstagsparty", kind: "party" },
 			];
 
-			calendar.setData({ events, currentYear: 2024 });
+			calendar.events = events;
 
 			calendar.addEventListener("calendar-event-click", (event) => {
 				const { date, events } = event.detail;
