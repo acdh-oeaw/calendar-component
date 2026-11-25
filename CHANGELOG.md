@@ -1,5 +1,28 @@
 # @acdh-oeaw/calendar-component
 
+## 0.0.17
+
+### Patch Changes
+
+- [#24](https://github.com/acdh-oeaw/calendar-component/pull/24)
+  [`59cc1b4`](https://github.com/acdh-oeaw/calendar-component/commit/59cc1b406449b8ff3d9ed9efcbe3fbd2d84bd1c3)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - do not submit surrounding forms when
+  clicking on a date
+
+- [#24](https://github.com/acdh-oeaw/calendar-component/pull/24)
+  [`59cc1b4`](https://github.com/acdh-oeaw/calendar-component/commit/59cc1b406449b8ff3d9ed9efcbe3fbd2d84bd1c3)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - handle empty events
+
+- [#24](https://github.com/acdh-oeaw/calendar-component/pull/24)
+  [`59cc1b4`](https://github.com/acdh-oeaw/calendar-component/commit/59cc1b406449b8ff3d9ed9efcbe3fbd2d84bd1c3)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - render correct dates independent of
+  local timezone
+
+- [#24](https://github.com/acdh-oeaw/calendar-component/pull/24)
+  [`59cc1b4`](https://github.com/acdh-oeaw/calendar-component/commit/59cc1b406449b8ff3d9ed9efcbe3fbd2d84bd1c3)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - only require `events` in `setData`
+  types
+
 ## 0.0.16
 
 ### Patch Changes
