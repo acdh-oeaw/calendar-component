@@ -28,6 +28,12 @@ export interface CalendarData {
 	endYear: number | null;
 }
 
+/** Only `events` and `currentYear` are used, everything else is derived from `events`. */
+export interface CalendarInput
+	extends Pick<CalendarData, "events">, Partial<Omit<CalendarData, "events">> {
+	currentYear?: number;
+}
+
 export class Calendar extends HTMLElement {
 	data: CalendarData;
 	currentYear: number | null;
@@ -68,7 +74,17 @@ export class Calendar extends HTMLElement {
 		this.update();
 	}
 
-	setData(data: CalendarData & { currentYear?: number }) {
+	setData(data: CalendarInput) {
+		if (data.events.length === 0) {
+			this.data = { events: [], eventsByDate: new Map(), startYear: null, endYear: null };
+			this.currentYear = null;
+
+			this.picker?.setData(null);
+			this.calendar?.setData(null);
+
+			return;
+		}
+
 		const dateRange = getDateRange(data.events);
 		const startYear = dateRange.min.getUTCFullYear();
 		const endYear = dateRange.max.getUTCFullYear();
@@ -159,8 +175,12 @@ export class CalendarYearSelect extends HTMLElement {
 		}
 	}
 
-	setData(data: CalendarYearPickerData) {
+	setData(data: CalendarYearPickerData | null) {
 		this.data = data;
+
+		if (data == null) {
+			this.innerHTML = "";
+		}
 
 		this.update();
 	}
@@ -218,8 +238,12 @@ export class CalendarYearRadioGroup extends HTMLElement {
 		}
 	}
 
-	setData(data: CalendarYearPickerData) {
+	setData(data: CalendarYearPickerData | null) {
 		this.data = data;
+
+		if (data == null) {
+			this.innerHTML = "";
+		}
 
 		this.update();
 	}
@@ -287,8 +311,12 @@ export class CalendarYear extends HTMLElement {
 		this.update();
 	}
 
-	setData(data: CalendarYearData) {
+	setData(data: CalendarYearData | null) {
 		this.data = data;
+
+		if (data == null) {
+			this.innerHTML = "";
+		}
 
 		this.update();
 	}
@@ -306,8 +334,6 @@ export class CalendarYear extends HTMLElement {
 			caption.textContent = this.i18n.months[index]!;
 			table.append(caption);
 
-			const date = new Date(Date.UTC(currentYear, index, 1));
-
 			month.forEach((week) => {
 				const tr = document.createElement("tr");
 
@@ -315,8 +341,7 @@ export class CalendarYear extends HTMLElement {
 					const td = document.createElement("td");
 
 					if (day != null) {
-						date.setDate(day);
-						const formattedDate = isoDate(date);
+						const formattedDate = isoDate(new Date(Date.UTC(currentYear, index, day)));
 
 						if (eventsByDate?.has(formattedDate)) {
 							const events = eventsByDate.get(formattedDate)!;
@@ -328,6 +353,7 @@ export class CalendarYear extends HTMLElement {
 							);
 
 							const button = document.createElement("button");
+							button.type = "button";
 							button.ariaLabel = formattedDate;
 							button.append(document.createTextNode(String(day)));
 

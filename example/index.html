@@ -31,10 +31,17 @@
 				}
 			}
 
-			acdh-ch-calendar > label > span {
-				display: block;
+			acdh-ch-calendar > fieldset {
+				border: none;
+				margin: 0;
+				min-inline-size: 0;
+				padding: 0;
+			}
+
+			acdh-ch-calendar > fieldset > legend {
 				font-weight: 600;
 				margin-block-end: 1rem;
+				padding: 0;
 			}
 
 			acdh-ch-calendar-year-picker div[role="radiogroup"] {
@@ -92,7 +99,7 @@
 				grid-template-columns: 1fr;
 			}
 
-			acdh-ch-calendar:not(:defined) > label {
+			acdh-ch-calendar:not(:defined) > fieldset {
 				display: none;
 			}
 
@@ -113,11 +120,12 @@
 			<h1>Beispiel-Kalender</h1>
 
 			<acdh-ch-calendar>
-				<label>
-					<span>Jahr</span>
+				<!-- When displaying a `<select>`, use a `<label>` instead. -->
+				<fieldset>
+					<legend>Jahr</legend>
 					<!-- To disallow selecting years without events, use `data-variant="sparse"`. -->
 					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
-				</label>
+				</fieldset>
 				<acdh-ch-calendar-year></acdh-ch-calendar-year>
 				<div data-loading-indicator>Loading...</div>
 			</acdh-ch-calendar>
@@ -153,7 +161,7 @@
 				const { date, events } = event.detail;
 
 				alert(
-					`${date} mit ${events.length} Ereignissen:\n${events
+					`${date.toLocaleDateString("de", { timeZone: "UTC" })} mit ${events.length} Ereignissen:\n${events
 						.map((event) => {
 							return `- ${event.label}`;
 						})

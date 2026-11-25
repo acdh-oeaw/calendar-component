@@ -25,10 +25,10 @@
 	<body>
 		<div id="app">
 			<acdh-ch-calendar>
-				<label>
-					<div>Select a year</div>
+				<fieldset>
+					<legend>Select a year</legend>
 					<acdh-ch-calendar-year-picker data-variant="sparse"></acdh-ch-calendar-year-picker>
-				</label>
+				</fieldset>
 				<acdh-ch-calendar-year></acdh-ch-calendar-year>
 			</acdh-ch-calendar>
 		</div>
@@ -58,7 +58,7 @@
 				const { date, events } = event.detail;
 
 				alert(
-					`${date} mit ${events.length} Ereignissen:\n${events
+					`${date.toLocaleDateString("de", { timeZone: "UTC" })} mit ${events.length} Ereignissen:\n${events
 						.map((event) => {
 							return `- ${event.label}`;
 						})
