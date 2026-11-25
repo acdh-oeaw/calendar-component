@@ -1,5 +1,33 @@
 # @acdh-oeaw/calendar-component
 
+## 0.1.0
+
+### Minor Changes
+
+- [#26](https://github.com/acdh-oeaw/calendar-component/pull/26)
+  [`45f91c0`](https://github.com/acdh-oeaw/calendar-component/commit/45f91c047b9beebf2c15988f41c151895d1bf2c2)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - make elements composable: pickers and
+  views can be nested anywhere inside `<acdh-calendar>`, in any number, and can be added, moved, and
+  removed at any time.
+
+  - rename `<acdh-ch-calendar>` and `<acdh-ch-calendar-year>` to `<acdh-calendar>` and
+    `<acdh-calendar-year>`
+  - add `events`, `i18n`, and `year` properties, and a `year` attribute
+  - add `calendar-year-change` event
+  - add `<acdh-calendar-year-radio-group>`, `<acdh-calendar-year-select>`, and
+    `<acdh-calendar-month>` elements
+  - add `sparse` and `weekdays` attributes
+  - add types for elements and events
+  - keep focus when events are refreshed
+  - add number of events to accessible labels
+  - allow calling `register` multiple times, and importing on the server
+
+  `setData`, `setI18n`, `currentYear`, `<acdh-ch-calendar>`, `<acdh-ch-calendar-year>`,
+  `<acdh-ch-calendar-year-picker>`, `data-variant`, and the `picker` option of `register` are
+  deprecated, but still work. the `data`, `picker`, and `calendar` properties of `<acdh-calendar>`,
+  and the `data`, `variant`, `setData`, `setI18n`, and `update` members of pickers and views have
+  been removed.
+
 ## 0.0.17
 
 ### Patch Changes
