@@ -1,7 +1,9 @@
 import {
+	DEPRECATED_ELEMENT_CALENDAR_YEAR,
+	DEPRECATED_ELEMENT_PICKER,
+	DEPRECATED_ELEMENT_ROOT,
 	ELEMENT_CALENDAR_MONTH,
 	ELEMENT_CALENDAR_YEAR,
-	ELEMENT_PICKER,
 	ELEMENT_ROOT,
 	ELEMENT_YEAR_RADIO_GROUP,
 	ELEMENT_YEAR_SELECT,
@@ -14,7 +16,7 @@ export interface CalendarRegisterOptions {
 	/**
 	 * Only affects the deprecated `<acdh-ch-calendar-year-picker>` element.
 	 *
-	 * @deprecated Use `<acdh-ch-calendar-year-radio-group>` or `<acdh-ch-calendar-year-select>`.
+	 * @deprecated Use `<acdh-calendar-year-radio-group>` or `<acdh-calendar-year-select>`.
 	 */
 	picker?: "radio-group" | "select";
 }
@@ -29,9 +31,11 @@ export function register(options?: CalendarRegisterOptions) {
 	define(ELEMENT_YEAR_RADIO_GROUP, CalendarYearRadioGroup);
 	define(ELEMENT_YEAR_SELECT, CalendarYearSelect);
 
-	/** A class can only be registered once, so the deprecated element needs a separate class. */
+	/** A class can only be registered once, so deprecated elements need separate classes. */
+	define(DEPRECATED_ELEMENT_ROOT, class extends Calendar {});
+	define(DEPRECATED_ELEMENT_CALENDAR_YEAR, class extends CalendarYear {});
 	define(
-		ELEMENT_PICKER,
+		DEPRECATED_ELEMENT_PICKER,
 		options?.picker === "select"
 			? class extends CalendarYearSelect {}
 			: class extends CalendarYearRadioGroup {},

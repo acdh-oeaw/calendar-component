@@ -19,7 +19,7 @@ const events = [createEvent("2021-09-26"), createEvent("2024-09-26")];
 
 function render(html: string) {
 	document.body.innerHTML = html;
-	const calendar = document.querySelector("acdh-ch-calendar");
+	const calendar = document.querySelector("acdh-calendar");
 	assert(calendar);
 	return calendar;
 }
@@ -56,12 +56,12 @@ afterEach(() => {
 	document.body.innerHTML = "";
 });
 
-const radioGroup = "<acdh-ch-calendar-year-radio-group></acdh-ch-calendar-year-radio-group>";
-const select = "<acdh-ch-calendar-year-select></acdh-ch-calendar-year-select>";
-const year = "<acdh-ch-calendar-year></acdh-ch-calendar-year>";
+const radioGroup = "<acdh-calendar-year-radio-group></acdh-calendar-year-radio-group>";
+const select = "<acdh-calendar-year-select></acdh-calendar-year-select>";
+const year = "<acdh-calendar-year></acdh-calendar-year>";
 
 function calendar(...children: Array<string>) {
-	return `<acdh-ch-calendar>${children.join("")}</acdh-ch-calendar>`;
+	return `<acdh-calendar>${children.join("")}</acdh-calendar>`;
 }
 
 void describe("composition", () => {
@@ -114,11 +114,11 @@ void describe("composition", () => {
 	});
 
 	void test("should support adding parts after the calendar has been connected", () => {
-		const element = document.createElement("acdh-ch-calendar");
+		const element = document.createElement("acdh-calendar");
 		document.body.append(element);
 		element.setData({ events });
-		element.append(document.createElement("acdh-ch-calendar-year-radio-group"));
-		element.append(document.createElement("acdh-ch-calendar-year"));
+		element.append(document.createElement("acdh-calendar-year-radio-group"));
+		element.append(document.createElement("acdh-calendar-year"));
 
 		assert.equal(count("input"), 4);
 		assert.equal(count("table"), 12);
@@ -128,15 +128,15 @@ void describe("composition", () => {
 		render(calendar(radioGroup, year)).setData({ events });
 
 		document
-			.querySelector("acdh-ch-calendar-year-radio-group")!
-			.replaceWith(document.createElement("acdh-ch-calendar-year-select"));
+			.querySelector("acdh-calendar-year-radio-group")!
+			.replaceWith(document.createElement("acdh-calendar-year-select"));
 
 		assert.deepEqual(getOptions(), ["2021", "2022", "2023", "2024"]);
 	});
 
 	void test("should support moving parts to a different calendar", () => {
 		document.body.innerHTML = calendar(year) + calendar();
-		const [first, second] = document.querySelectorAll("acdh-ch-calendar");
+		const [first, second] = document.querySelectorAll("acdh-calendar");
 		first!.setData({ events: [createEvent("2021-01-01")] });
 		second!.setData({ events: [createEvent("2024-02-02")] });
 
@@ -190,6 +190,36 @@ void describe("composition", () => {
 		assert.equal(updates, 1);
 	});
 
+	void test("should support mixing deprecated and current element names", () => {
+		document.body.innerHTML = `
+			<acdh-ch-calendar>${radioGroup}${year}</acdh-ch-calendar>
+			${calendar("<acdh-ch-calendar-year></acdh-ch-calendar-year>")}
+		`;
+		document.querySelector("acdh-ch-calendar")!.setData({ events });
+		document.querySelector("acdh-calendar")!.setData({ events });
+
+		assert.equal(count("acdh-ch-calendar acdh-calendar-year table"), 12);
+		assert.equal(count("acdh-calendar acdh-ch-calendar-year table"), 12);
+
+		selectRadio(2024);
+
+		assert.equal(document.querySelector("acdh-ch-calendar")!.year, 2024);
+		assert.equal(document.querySelector("acdh-calendar")!.year, 2021);
+	});
+
+	void test("should isolate calendars nested in deprecated calendars", () => {
+		document.body.innerHTML = `<acdh-ch-calendar>${calendar(radioGroup)}</acdh-ch-calendar>`;
+		const outer = document.querySelector("acdh-ch-calendar")!;
+		const inner = document.querySelector("acdh-calendar")!;
+		outer.setData({ events });
+		inner.setData({ events });
+
+		selectRadio(2024);
+
+		assert.equal(inner.year, 2024);
+		assert.equal(outer.year, 2021);
+	});
+
 	void test("should ignore parts outside of a calendar", () => {
 		document.body.innerHTML = year + radioGroup;
 
@@ -198,7 +228,7 @@ void describe("composition", () => {
 
 	void test("should isolate nested calendars", () => {
 		document.body.innerHTML = calendar(year, calendar(radioGroup));
-		const [outer, inner] = document.querySelectorAll("acdh-ch-calendar");
+		const [outer, inner] = document.querySelectorAll("acdh-calendar");
 		outer!.setData({ events });
 		inner!.setData({ events });
 
@@ -242,7 +272,7 @@ void describe("properties", () => {
 	});
 
 	void test("should set year via attribute", async () => {
-		const element = render('<acdh-ch-calendar year="2024">' + radioGroup + "</acdh-ch-calendar>");
+		const element = render('<acdh-calendar year="2024">' + radioGroup + "</acdh-calendar>");
 		element.events = events;
 		await update();
 		assert.equal(getCheckedYear(), "2024");
@@ -315,7 +345,7 @@ void describe("properties", () => {
 	});
 
 	void test("should clear rendered content, but keep fallback content", async () => {
-		const element = render(calendar("<acdh-ch-calendar-year>Loading</acdh-ch-calendar-year>"));
+		const element = render(calendar("<acdh-calendar-year>Loading</acdh-calendar-year>"));
 		element.events = [];
 		await update();
 		assert.equal(element.textContent, "Loading");
@@ -371,7 +401,7 @@ void describe("year pickers", () => {
 	void test("should update when toggling sparse", () => {
 		const element = render(calendar(radioGroup));
 		element.setData({ events });
-		const picker = document.querySelector("acdh-ch-calendar-year-radio-group")!;
+		const picker = document.querySelector("acdh-calendar-year-radio-group")!;
 
 		picker.sparse = true;
 		assert.equal(count("input:disabled"), 2);
@@ -387,7 +417,7 @@ void describe("year pickers", () => {
 
 	void test("should include current year without events in sparse select", () => {
 		const element = render(
-			calendar("<acdh-ch-calendar-year-select sparse></acdh-ch-calendar-year-select>"),
+			calendar("<acdh-calendar-year-select sparse></acdh-calendar-year-select>"),
 		);
 		element.setData({ events, currentYear: 2022 });
 
@@ -404,7 +434,7 @@ void describe("year pickers", () => {
 	void test("should keep provided id", () => {
 		render(calendar(radioGroup.replace("group>", 'group id="years">'))).setData({ events });
 
-		assert.equal(document.querySelector("acdh-ch-calendar-year-radio-group")!.id, "years");
+		assert.equal(document.querySelector("acdh-calendar-year-radio-group")!.id, "years");
 	});
 
 	void test("should use distinct names", () => {
@@ -419,14 +449,14 @@ void describe("year pickers", () => {
 
 void describe("views", () => {
 	void test("should display single month", () => {
-		const element = render(calendar('<acdh-ch-calendar-month month="9"></acdh-ch-calendar-month>'));
+		const element = render(calendar('<acdh-calendar-month month="9"></acdh-calendar-month>'));
 		element.setData({ events });
 
 		assert.equal(count("table"), 1);
 		assert.equal(document.querySelector("caption")!.textContent, "September");
 		assert.equal(count("td button"), 1);
 
-		document.querySelector("acdh-ch-calendar-month")!.month = 2;
+		document.querySelector("acdh-calendar-month")!.month = 2;
 		assert.equal(document.querySelector("caption")!.textContent, "February");
 		assert.equal(count("td > *"), 28);
 	});
@@ -437,7 +467,7 @@ void describe("views", () => {
 		assert.equal(count("th"), 0);
 
 		element.setI18n(de);
-		document.querySelector("acdh-ch-calendar-year")!.weekdays = true;
+		document.querySelector("acdh-calendar-year")!.weekdays = true;
 
 		assert.equal(count("thead"), 12);
 		assert.equal(document.querySelector("th")!.textContent, "Mo");

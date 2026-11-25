@@ -1,6 +1,6 @@
 import { isoDate, range } from "@acdh-oeaw/lib";
 
-import { ELEMENT_ROOT, EVENT_CHANGE_YEAR, EVENT_SELECT_YEAR } from "../constants.ts";
+import { EVENT_CHANGE_YEAR, EVENT_SELECT_YEAR, SELECTOR_ROOT } from "../constants.ts";
 import { getDateRange } from "../get-date-range.ts";
 import en from "../i18n/en.ts";
 import type { I18n } from "../i18n/types.ts";
@@ -29,7 +29,7 @@ export class Calendar extends HTMLElementBase {
 
 		this.addEventListener(EVENT_SELECT_YEAR, (event) => {
 			/** Ignore events from nested calendars. */
-			if ((event.target as Element).closest(ELEMENT_ROOT) !== this) return;
+			if ((event.target as Element).closest(SELECTOR_ROOT) !== this) return;
 
 			this.#selectYear(event.detail.year);
 		});

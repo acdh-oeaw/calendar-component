@@ -9,12 +9,16 @@ import type { CalendarClickEventDetail, CalendarYearEventDetail } from "./types.
 
 declare global {
 	interface HTMLElementTagNameMap {
+		"acdh-calendar": Calendar;
+		"acdh-calendar-month": CalendarMonth;
+		"acdh-calendar-year": CalendarYear;
+		"acdh-calendar-year-radio-group": CalendarYearRadioGroup;
+		"acdh-calendar-year-select": CalendarYearSelect;
+		/** @deprecated Use `acdh-calendar`. */
 		"acdh-ch-calendar": Calendar;
-		"acdh-ch-calendar-month": CalendarMonth;
+		/** @deprecated Use `acdh-calendar-year`. */
 		"acdh-ch-calendar-year": CalendarYear;
-		"acdh-ch-calendar-year-radio-group": CalendarYearRadioGroup;
-		"acdh-ch-calendar-year-select": CalendarYearSelect;
-		/** @deprecated */
+		/** @deprecated Use `acdh-calendar-year-radio-group` or `acdh-calendar-year-select`. */
 		"acdh-ch-calendar-year-picker": CalendarYearPicker;
 	}
 

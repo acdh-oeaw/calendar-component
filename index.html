@@ -9,28 +9,28 @@
 				font-family: ui-sans-serif, system-ui, sans-serif;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds] {
+			acdh-calendar-year td > button[data-event-kinds] {
 				--calendar-cell-color: dodgerblue;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="birthday"] {
+			acdh-calendar-year td > button[data-event-kinds="birthday"] {
 				--calendar-cell-color: hotpink;
 			}
 
-			acdh-ch-calendar-year td > button[data-event-kinds="party"] {
+			acdh-calendar-year td > button[data-event-kinds="party"] {
 				--calendar-cell-color: lime;
 			}
 		</style>
 	</head>
 	<body>
 		<div id="app">
-			<acdh-ch-calendar year="2024">
+			<acdh-calendar year="2024">
 				<fieldset>
 					<legend>Select a year</legend>
-					<acdh-ch-calendar-year-radio-group sparse></acdh-ch-calendar-year-radio-group>
+					<acdh-calendar-year-radio-group sparse></acdh-calendar-year-radio-group>
 				</fieldset>
-				<acdh-ch-calendar-year weekdays></acdh-ch-calendar-year>
-			</acdh-ch-calendar>
+				<acdh-calendar-year weekdays></acdh-calendar-year>
+			</acdh-calendar>
 		</div>
 
 		<script type="module">
@@ -39,7 +39,7 @@
 
 			register();
 
-			const calendar = document.querySelector("acdh-ch-calendar");
+			const calendar = document.querySelector("acdh-calendar");
 
 			calendar.i18n = de;
 

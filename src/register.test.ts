@@ -17,25 +17,31 @@ const events: Array<CalendarEvent> = [
 /** Elements can only be registered once, so registration is tested in a single sequence. */
 void test("should register elements in any order", async () => {
 	document.body.innerHTML = `
-		<acdh-ch-calendar>
-			<acdh-ch-calendar-year-radio-group></acdh-ch-calendar-year-radio-group>
-			<acdh-ch-calendar-year-select></acdh-ch-calendar-year-select>
+		<acdh-calendar>
+			<acdh-calendar-year-radio-group></acdh-calendar-year-radio-group>
+			<acdh-calendar-year-select></acdh-calendar-year-select>
 			<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
-			<acdh-ch-calendar-year>Loading</acdh-ch-calendar-year>
+			<acdh-calendar-year>Loading</acdh-calendar-year>
+		</acdh-calendar>
+		<acdh-ch-calendar>
+			<acdh-ch-calendar-year></acdh-ch-calendar-year>
 		</acdh-ch-calendar>
 	`;
 
-	const calendar = document.querySelector("acdh-ch-calendar")!;
+	const calendar = document.querySelector("acdh-calendar")!;
 
 	/** Properties are set before the calendar is registered. */
 	calendar.events = events;
 	calendar.year = 2024;
 	calendar.i18n = { months: ["Jänner"] };
 
-	/** Parts are registered before the calendar. */
-	customElements.define("acdh-ch-calendar-year", CalendarYear);
+	const deprecated = document.querySelector("acdh-ch-calendar")!;
+	deprecated.events = events;
 
-	assert.equal(document.querySelector("acdh-ch-calendar-year")!.textContent, "Loading");
+	/** Parts are registered before the calendar. */
+	customElements.define("acdh-calendar-year", CalendarYear);
+
+	assert.equal(document.querySelector("acdh-calendar-year")!.textContent, "Loading");
 
 	register({ picker: "select" });
 	await Promise.resolve();
@@ -43,7 +49,8 @@ void test("should register elements in any order", async () => {
 
 	assert.equal(calendar.year, 2024);
 	assert.equal(Object.hasOwn(calendar, "events"), false);
-	assert.equal(document.querySelectorAll("table").length, 12);
+	assert.equal(calendar.querySelectorAll("table").length, 12);
+	assert.equal(deprecated.querySelectorAll("table").length, 12);
 	assert.equal(document.querySelector("caption")!.textContent, "Jänner");
 
 	const picker = document.querySelector("acdh-ch-calendar-year-picker")!;

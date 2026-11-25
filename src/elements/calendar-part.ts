@@ -1,4 +1,4 @@
-import { ELEMENT_ROOT } from "../constants.ts";
+import { SELECTOR_ROOT } from "../constants.ts";
 import type { Calendar } from "./calendar.ts";
 import { HTMLElementBase } from "./html-element.ts";
 
@@ -14,11 +14,14 @@ export abstract class CalendarPart extends HTMLElementBase {
 
 		const { signal } = this.#controller;
 
-		if (customElements.get(ELEMENT_ROOT) != null) {
-			this.#connect(signal);
+		const calendar = this.closest<Calendar>(SELECTOR_ROOT);
+		if (calendar == null) return;
+
+		if (customElements.get(calendar.localName) != null) {
+			this.#connect(calendar, signal);
 		} else {
-			void customElements.whenDefined(ELEMENT_ROOT).then(() => {
-				this.#connect(signal);
+			void customElements.whenDefined(calendar.localName).then(() => {
+				this.#connect(calendar, signal);
 			});
 		}
 	}
@@ -53,11 +56,11 @@ export abstract class CalendarPart extends HTMLElementBase {
 
 	protected abstract render(calendar: Calendar, year: number): void;
 
-	#connect(signal: AbortSignal) {
+	#connect(calendar: Calendar, signal: AbortSignal) {
 		if (signal.aborted) return;
 
-		this.#calendar = this.closest<Calendar>(ELEMENT_ROOT);
-		this.#calendar?.subscribe(() => {
+		this.#calendar = calendar;
+		calendar.subscribe(() => {
 			this.update();
 		}, signal);
 	}
