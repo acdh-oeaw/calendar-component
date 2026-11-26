@@ -1,6 +1,5 @@
 import type { CalendarMonth, CalendarYear } from "./elements/calendar-view.ts";
 import type {
-	CalendarYearPicker,
 	CalendarYearRadioGroup,
 	CalendarYearSelect,
 } from "./elements/calendar-year-picker.ts";
@@ -14,12 +13,6 @@ declare global {
 		"acdh-calendar-year": CalendarYear;
 		"acdh-calendar-year-radio-group": CalendarYearRadioGroup;
 		"acdh-calendar-year-select": CalendarYearSelect;
-		/** @deprecated Use `acdh-calendar`. */
-		"acdh-ch-calendar": Calendar;
-		/** @deprecated Use `acdh-calendar-year`. */
-		"acdh-ch-calendar-year": CalendarYear;
-		/** @deprecated Use `acdh-calendar-year-radio-group` or `acdh-calendar-year-select`. */
-		"acdh-ch-calendar-year-picker": CalendarYearPicker;
 	}
 
 	interface HTMLElementEventMap {
@@ -38,11 +31,5 @@ export {
 } from "./elements/calendar-year-picker.ts";
 export { getDateRange } from "./get-date-range.ts";
 export type { I18n } from "./i18n/types.ts";
-export { type CalendarRegisterOptions, register } from "./register.ts";
-export type {
-	CalendarClickEventDetail,
-	CalendarData,
-	CalendarEvent,
-	CalendarInput,
-	CalendarYearEventDetail,
-} from "./types.ts";
+export { register } from "./register.ts";
+export type { CalendarClickEventDetail, CalendarEvent, CalendarYearEventDetail } from "./types.ts";

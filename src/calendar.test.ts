@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { afterEach, describe, test } from "node:test";
 
-import type { Calendar, CalendarData, CalendarEvent } from "./calendar.ts";
+import type { Calendar, CalendarEvent } from "./calendar.ts";
+import { setProperties } from "./testing/set-properties.ts";
 import { setupDom } from "./testing/setup-dom.ts";
 
 /** Custom elements extend `HTMLElement`, so globals must exist before the module is evaluated. */
@@ -10,14 +11,13 @@ setupDom();
 const { register } = await import("./calendar.ts");
 const { default: de } = await import("./i18n/de.ts");
 
-/** Uses the deprecated api, to ensure it keeps working. */
 register();
 
 const template = `
-	<acdh-ch-calendar>
-		<acdh-ch-calendar-year-picker></acdh-ch-calendar-year-picker>
-		<acdh-ch-calendar-year></acdh-ch-calendar-year>
-	</acdh-ch-calendar>
+	<acdh-calendar>
+		<acdh-calendar-year-radio-group></acdh-calendar-year-radio-group>
+		<acdh-calendar-year></acdh-calendar-year>
+	</acdh-calendar>
 `;
 
 function createEvent(date: string, kind = "birthday", label = date): CalendarEvent {
@@ -26,7 +26,7 @@ function createEvent(date: string, kind = "birthday", label = date): CalendarEve
 
 function render(html = template): Calendar {
 	document.body.innerHTML = html;
-	const calendar = document.querySelector<Calendar>("acdh-ch-calendar");
+	const calendar = document.querySelector<Calendar>("acdh-calendar");
 	assert(calendar);
 	return calendar;
 }
@@ -56,24 +56,24 @@ afterEach(() => {
 });
 
 void describe("calendar year", () => {
-	void test("should render twelve months", () => {
-		render().setData({ events: [createEvent("2024-09-26")] });
+	void test("should render twelve months", async () => {
+		await setProperties(render(), { events: [createEvent("2024-09-26")] });
 
 		assert.equal(document.querySelectorAll("table").length, 12);
 		assert.equal(getCaptions()[0], "January");
 		assert.equal(document.querySelectorAll("td > *").length, 366);
 	});
 
-	void test("should use provided month labels", () => {
+	void test("should use provided month labels", async () => {
 		const calendar = render();
-		calendar.setI18n(de);
-		calendar.setData({ events: [createEvent("2024-09-26")] });
+		await setProperties(calendar, { i18n: de });
+		await setProperties(calendar, { events: [createEvent("2024-09-26")] });
 
 		assert.deepEqual(getCaptions(), de.months);
 	});
 
-	void test("should group events on the same day", () => {
-		render().setData({
+	void test("should group events on the same day", async () => {
+		await setProperties(render(), {
 			events: [
 				createEvent("2024-09-26", "birthday"),
 				createEvent("2024-09-26", "big party"),
@@ -88,10 +88,10 @@ void describe("calendar year", () => {
 		assert.equal(buttons[0]!.dataset["eventsCount"], "3");
 	});
 
-	void test("should dispatch bubbling event with date and events on click", () => {
+	void test("should dispatch bubbling event with date and events on click", async () => {
 		const event = createEvent("2024-09-26");
 		const calendar = render();
-		calendar.setData({ events: [event] });
+		await setProperties(calendar, { events: [event] });
 
 		const details: Array<{ date: Date; events: Array<CalendarEvent> }> = [];
 		calendar.addEventListener("calendar-event-click", (event) => {
@@ -103,8 +103,10 @@ void describe("calendar year", () => {
 		assert.deepEqual(details, [{ date: new Date("2024-09-26"), events: [event] }]);
 	});
 
-	void test("should not submit surrounding form on click", () => {
-		render(`<form>${template}</form>`).setData({ events: [createEvent("2024-09-26")] });
+	void test("should not submit surrounding form on click", async () => {
+		await setProperties(render(`<form>${template}</form>`), {
+			events: [createEvent("2024-09-26")],
+		});
 
 		let submitted = 0;
 		document.querySelector("form")!.addEventListener("submit", (event) => {
@@ -126,7 +128,7 @@ void describe("calendar year", () => {
 		"Pacific/Kiritimati",
 		"UTC",
 	]) {
-		void test(`should display events on correct dates independent of local timezone: ${timezone}`, (t) => {
+		void test(`should display events on correct dates independent of local timezone: ${timezone}`, async (t) => {
 			const original = process.env["TZ"];
 			process.env["TZ"] = timezone;
 			t.after(() => {
@@ -143,7 +145,7 @@ void describe("calendar year", () => {
 					dates.push(new Date(ms).toISOString().slice(0, 10));
 				}
 
-				render().setData({
+				await setProperties(render(), {
 					events: dates.map((date) => {
 						return createEvent(date);
 					}),
@@ -168,103 +170,84 @@ void describe("calendar year", () => {
 void describe("calendar", () => {
 	const events = [createEvent("2021-09-26"), createEvent("2024-09-26")];
 
-	void test("should display first year by default", () => {
+	void test("should display first year by default", async () => {
 		const calendar = render();
-		calendar.setData({ events });
+		await setProperties(calendar, { events });
 
-		assert.equal(calendar.currentYear, 2021);
+		assert.equal(calendar.year, 2021);
 		assert.equal(getCheckedYear(), "2021");
 	});
 
-	void test("should display provided year", () => {
+	void test("should display provided year", async () => {
 		const calendar = render();
-		calendar.setData({ events, currentYear: 2024 });
+		await setProperties(calendar, { events, year: 2024 });
 
-		assert.equal(calendar.currentYear, 2024);
+		assert.equal(calendar.year, 2024);
 		assert.equal(getCheckedYear(), "2024");
 	});
 
-	void test("should ignore provided year when out of range", () => {
+	void test("should ignore provided year when out of range", async () => {
 		const calendar = render();
-		calendar.setData({ events, currentYear: 1999 });
+		await setProperties(calendar, { events, year: 1999 });
 
-		assert.equal(calendar.currentYear, 2021);
+		assert.equal(calendar.year, 2021);
 	});
 
-	void test("should display year without events", () => {
-		render().setData({ events, currentYear: 2022 });
+	void test("should display year without events", async () => {
+		await setProperties(render(), { events, year: 2022 });
 
 		assert.equal(document.querySelectorAll("table").length, 12);
 		assert.equal(getButtons().length, 0);
 	});
 
-	void test("should keep fallback content until data is set", () => {
+	void test("should keep fallback content until data is set", async () => {
 		const calendar = render(`
-			<acdh-ch-calendar>
-				<acdh-ch-calendar-year-picker>picker</acdh-ch-calendar-year-picker>
-				<acdh-ch-calendar-year>year</acdh-ch-calendar-year>
-			</acdh-ch-calendar>
+			<acdh-calendar>
+				<acdh-calendar-year-radio-group>picker</acdh-calendar-year-radio-group>
+				<acdh-calendar-year>year</acdh-calendar-year>
+			</acdh-calendar>
 		`);
 
-		assert.equal(document.querySelector("acdh-ch-calendar-year")!.textContent, "year");
-		assert.equal(document.querySelector("acdh-ch-calendar-year-picker")!.textContent, "picker");
+		assert.equal(document.querySelector("acdh-calendar-year")!.textContent, "year");
+		assert.equal(document.querySelector("acdh-calendar-year-radio-group")!.textContent, "picker");
 
-		calendar.setData({ events });
+		await setProperties(calendar, { events });
 
-		assert.doesNotMatch(document.querySelector("acdh-ch-calendar-year")!.textContent, /year/);
+		assert.doesNotMatch(document.querySelector("acdh-calendar-year")!.textContent, /year/);
 	});
 
-	void test("should handle empty events", () => {
+	void test("should handle empty events", async () => {
 		const calendar = render();
-		calendar.setData({ events: [] });
+		await setProperties(calendar, { events: [] });
 
-		assert.equal(calendar.currentYear, null);
+		assert.equal(calendar.year, null);
 		assert.equal(document.querySelectorAll("table").length, 0);
 		assert.equal(getInputs().length, 0);
 	});
 
-	void test("should clear previous data when setting empty events", () => {
+	void test("should clear previous data when setting empty events", async () => {
 		const calendar = render();
-		calendar.setData({ events });
+		await setProperties(calendar, { events });
 		assert.equal(document.querySelectorAll("table").length, 12);
 
-		calendar.setData({ events: [] });
+		await setProperties(calendar, { events: [] });
 		assert.equal(document.querySelectorAll("table").length, 0);
 		assert.equal(getInputs().length, 0);
 
-		calendar.setData({ events });
+		await setProperties(calendar, { events });
 		assert.equal(document.querySelectorAll("table").length, 12);
 		assert.equal(getInputs().length, 4);
 	});
 
-	void test("should not restore cleared data when reconnecting", () => {
+	void test("should not restore cleared data when reconnecting", async () => {
 		const calendar = render();
-		calendar.setData({ events });
-		calendar.setData({ events: [] });
+		await setProperties(calendar, { events });
+		await setProperties(calendar, { events: [] });
 
 		calendar.remove();
 		document.body.append(calendar);
 
 		assert.equal(document.querySelectorAll("table").length, 0);
-	});
-
-	void test("should only require events", () => {
-		const calendar = render();
-		const data: CalendarData = {
-			events,
-			eventsByDate: new Map(),
-			startYear: null,
-			endYear: null,
-		};
-
-		/** Derived properties are optional, and ignored. */
-		calendar.setData(data);
-		assert.equal(calendar.currentYear, 2021);
-
-		assert.throws(() => {
-			// @ts-expect-error Events are required.
-			calendar.setData({ currentYear: 2024 });
-		});
 	});
 });
 
@@ -280,8 +263,8 @@ void describe("radio group picker", () => {
 		input.dispatchEvent(new Event("change", { bubbles: true }));
 	}
 
-	void test("should display all years in range", () => {
-		render().setData({ events });
+	void test("should display all years in range", async () => {
+		await setProperties(render(), { events });
 
 		assert.deepEqual(
 			getInputs().map((input) => {
@@ -296,8 +279,8 @@ void describe("radio group picker", () => {
 		);
 	});
 
-	void test("should disable years without events in sparse variant", () => {
-		render(template.replace("year-picker>", 'year-picker data-variant="sparse">')).setData({
+	void test("should disable years without events in sparse variant", async () => {
+		await setProperties(render(template.replace("year-radio-group>", "year-radio-group sparse>")), {
 			events,
 		});
 
@@ -313,9 +296,9 @@ void describe("radio group picker", () => {
 		);
 	});
 
-	void test("should display selected year", () => {
+	void test("should display selected year", async () => {
 		const calendar = render();
-		calendar.setData({ events });
+		await setProperties(calendar, { events });
 
 		const years: Array<number> = [];
 		calendar.addEventListener("calendar-year-select", (event) => {
@@ -325,15 +308,15 @@ void describe("radio group picker", () => {
 		select("2024");
 
 		assert.deepEqual(years, [2024]);
-		assert.equal(calendar.currentYear, 2024);
+		assert.equal(calendar.year, 2024);
 		assert.equal(getButtons()[0]!.dataset["date"], "2024-09-26");
 	});
 
-	void test("should use distinct names for multiple calendars", () => {
+	void test("should use distinct names for multiple calendars", async () => {
 		document.body.innerHTML = template + template;
-		document.querySelectorAll<Calendar>("acdh-ch-calendar").forEach((calendar) => {
-			calendar.setData({ events });
-		});
+		for (const calendar of document.querySelectorAll("acdh-calendar")) {
+			await setProperties(calendar, { events });
+		}
 
 		const names = new Set(
 			getInputs().map((input) => {

@@ -5,19 +5,14 @@ import { CalendarPart } from "./calendar-part.ts";
 import type { Calendar } from "./calendar.ts";
 
 export abstract class CalendarYearPicker extends CalendarPart {
-	/** The `data-variant` attribute is deprecated. */
-	static readonly observedAttributes = ["data-variant", "sparse"];
+	static readonly observedAttributes = ["sparse"];
 
 	/** Only allow selecting years with events. */
 	get sparse(): boolean {
-		return this.hasAttribute("sparse") || this.dataset["variant"] === "sparse";
+		return this.hasAttribute("sparse");
 	}
 
 	set sparse(sparse: boolean) {
-		if (!sparse && this.dataset["variant"] === "sparse") {
-			delete this.dataset["variant"];
-		}
-
 		this.toggleAttribute("sparse", sparse);
 	}
 
