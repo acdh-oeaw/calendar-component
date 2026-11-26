@@ -1,5 +1,22 @@
 # @acdh-oeaw/calendar-component
 
+## 0.2.0
+
+### Minor Changes
+
+- [#31](https://github.com/acdh-oeaw/calendar-component/pull/31)
+  [`b2d7a17`](https://github.com/acdh-oeaw/calendar-component/commit/b2d7a176f0f0019e4157b131a35b257c7e1fb8ce)
+  Thanks [@stefanprobst](https://github.com/stefanprobst)! - remove deprecated api:
+
+  - `<acdh-ch-calendar>` and `<acdh-ch-calendar-year>`: use `<acdh-calendar>` and
+    `<acdh-calendar-year>`, also in css selectors
+  - `<acdh-ch-calendar-year-picker>` and `register({ picker })`: use
+    `<acdh-calendar-year-radio-group>` or `<acdh-calendar-year-select>`
+  - `setData`, `currentYear`, and the `CalendarData` and `CalendarInput` types: use `events` and
+    `year`
+  - `setI18n`: use `i18n`
+  - `data-variant="sparse"`: use `sparse`
+
 ## 0.1.0
 
 ### Minor Changes
