@@ -6,4 +6,4 @@ COPY ./example ./
 
 EXPOSE 3000
 
-CMD ["caddy", "file-server", "--listen", ":3000"]
+CMD ["caddy", "file-server", "--listen", ":3000", "--no-compress"]
